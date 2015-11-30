@@ -186,8 +186,10 @@ fortify.factanal <- function(model, data = NULL, ...) {
 #' @inheritParams fortify_base
 #' @return data.frame
 #' @examples
+#' \dontrun{
 #' model <- lfda::lfda(iris[, -5], iris[, 5], 3, metric = "plain")
 #' fortify(model)
+#' }
 #' @export
 fortify.lfda <- function(model, data = NULL, ...) {
 
@@ -295,26 +297,26 @@ autoplot.pca_common <- function(object, data = NULL,
   plot.data <- ggplot2::fortify(object, data = data)
   plot.data$rownames <- rownames(plot.data)
 
-  if (is(object, 'prcomp')) {
+  if (is_derived_from(object, 'prcomp')) {
     x.column <- 'PC1'
     y.column <- 'PC2'
     loadings.column <- 'rotation'
-  } else if (is(object, 'princomp')) {
+  } else if (is_derived_from(object, 'princomp')) {
     x.column <- 'Comp.1'
     y.column <- 'Comp.2'
     loadings.column <- 'loadings'
-  } else if (is(object, 'factanal')) {
+  } else if (is_derived_from(object, 'factanal')) {
     x.column <- 'Factor1'
     y.column <- 'Factor2'
     loadings.column <- 'loadings'
-  } else if (is(object, 'lfda')) {
+  } else if (is_derived_from(object, 'lfda')) {
     x.column <- 'PC1'
     y.column <- 'PC2'
     loadings.column <- 'rotation'
   } else {
     stop(paste0('Unsupported class for autoplot.pca_common: ', class(object)))
   }
-  mapping = ggplot2::aes_string(x = x.column, y = y.column)
+  mapping <-  ggplot2::aes_string(x = x.column, y = y.column)
   loadings.mapping <- ggplot2::aes_string(x = 0, y = 0, xend = x.column, yend = y.column)
 
   if (is.logical(shape) && !shape && missing(label)) {
@@ -339,7 +341,7 @@ autoplot.pca_common <- function(object, data = NULL,
                   label.fontface = label.fontface, label.lineheight = label.lineheight,
                   label.hjust = label.hjust, label.vjust = label.vjust)
   if (loadings) {
-    loadings.data = as.data.frame(object[[loadings.column]][,])
+    loadings.data <- as.data.frame(object[[loadings.column]][,])
     loadings.data$rownames <- rownames(loadings.data)
 
     p <- p + geom_segment(data = loadings.data,
@@ -372,13 +374,13 @@ autoplot.pca_common <- function(object, data = NULL,
           dplyr::group_by_(frame.colour) %>%
           dplyr::do(.[grDevices::chull(.[c(x.column, y.column)]), ])
       }
-      mapping = aes_string(colour = frame.colour, fill = frame.colour)
+      mapping <- aes_string(colour = frame.colour, fill = frame.colour)
       p <- p + ggplot2::geom_polygon(data = hulls, mapping = mapping,
                                      alpha = frame.alpha)
     } else if (frame.type %in% c('t', 'norm', 'euclid')) {
       ggversion <- utils::packageVersion('ggplot2')
       if (utils::compareVersion(as.character(ggversion), '1.0.0') >= 0) {
-        mapping = aes_string(colur = frame.colour, fill = frame.colour)
+        mapping <- aes_string(colur = frame.colour, fill = frame.colour)
         p <- p + ggplot2::stat_ellipse(mapping = mapping,
                                        level = frame.level, type = frame.type,
                                        geom = 'polygon', alpha = frame.alpha)
@@ -444,7 +446,7 @@ fortify.stepfun <- function(model, data, ...) {
   }
   lim <- lim + dr * c(-1, 1)
   x <- c(lim[1], rep(x, each = 2), lim[2])
-  y <- eval(expression(c(yleft, y)), envir = environment(model))
+  y <- base::eval(expression(c(yleft, y)), envir = environment(model))
   y <- rep(y, each = 2)
   d <- data.frame(x = x, y = y)
   post_fortify(d)
@@ -497,5 +499,3 @@ autoplot.stepfun <- function(object,
                      main = main, xlab = xlab, ylab = ylab, asp = asp)
   p
 }
-
-

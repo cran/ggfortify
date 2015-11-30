@@ -60,12 +60,13 @@ fortify.MSM.lm <- function(model, data = NULL, melt = FALSE, ...) {
 #'                        control = list(parallelization = FALSE))
 #' autoplot(d.mswm)
 #' }
+#' @importFrom scales percent
 #' @export
 autoplot.MSM.lm <- function(object, prob.colour = '#FF0000',
                             prob.linetype = 'dashed', ...) {
   plot.data <- ggplot2::fortify(object, melt = TRUE)
 
-  y = 'SmoProb'
+  y <- 'SmoProb'
   p <- autoplot.ts(plot.data, columns = y, group = 'Model', ...)
   p <- p + ggplot2::geom_linerange(mapping = ggplot2::aes_string(ymax = 'FiltProb'), ymin = 0) +
     ggplot2::facet_wrap(~Model, ncol = 1) +

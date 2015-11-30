@@ -23,10 +23,17 @@ fortify.list <- function(model, data = NULL, ...) {
 #' Autoplot list
 #'
 #' @param object \code{list} instance
+#' @param data original dataset, if needed
 #' @param ... other arguments passed to methods
+#' @inheritParams apply_facets
 #' @return ggplot
 #' @export
-autoplot.list <- function(object, ...) {
+autoplot.list <- function(object, data = NULL,
+                          nrow = NULL, ncol = NULL, scales = 'free_y',...) {
+  if (length(object) ==0) {
+    stop('list length = 0, contains nothing')
+  }
+
   klass <- infer(object)
   if (klass == 'mds-like') {
     return(ggplot2::autoplot(object$points[, 1:2], geom = 'point', ...))
@@ -39,6 +46,27 @@ autoplot.list <- function(object, ...) {
   } else if (klass == 'KFASSignal') {
     return(ggplot2::autoplot(object$signal, ...))
   }
+
+  # if model is a list of a single class instances, try to plot them with facets
+  if (all(sapply(object, support_autoplot))) {
+
+    if (is.null(names(object))) {
+      list_names <- seq_along(object)
+    } else {
+      list_names <- names(object)
+    }
+    p <- lapply(object, function(x) autoplot(x, data = data, nrow = nrow,
+                                             ncol = ncol, scales = scales, ...))
+    if (is(p[[1]], 'ggmultiplot')) {
+      p <- unlist(lapply(p, function(x) x@plots), recursive = FALSE)
+    }
+    # set default
+    if (is.null(ncol)) { ncol <- 0 }
+    if (is.null(nrow)) { nrow <- 0 }
+    p <- new('ggmultiplot', plots = p, nrow = nrow, ncol = ncol)
+    return(p)
+  }
+
   stop('Unable to infer class from input list')
 }
 
@@ -46,7 +74,6 @@ autoplot.list <- function(object, ...) {
 #'
 #' @param data list instance
 #' @return character
-#' @export
 infer <- function(data) {
   if (check_names(data, c('points', 'eig', 'x', 'ac', 'GOF'))) {
     # cmdscale
@@ -61,10 +88,11 @@ infer <- function(data) {
     # dlm::dlmSmooth
     return('dlmSmooth')
   } else if (check_names(data, c('signal', 'variance'))) {
-      # KFAS::signal
-      return('KFASSignal')
+    # KFAS::signal
+    return('KFASSignal')
+  } else {
+    return('list')
   }
-  stop('Unable to infer class from input list')
 }
 
 #' Check data names are equal with expected
@@ -79,4 +107,3 @@ check_names <- function(data, expected) {
   }
   return (FALSE)
 }
-

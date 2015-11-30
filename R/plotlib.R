@@ -42,7 +42,7 @@ plot_confint <- function (p, data = NULL, lower = 'lower', upper = 'upper',
 
   if (conf.int) {
     if (!is.null(conf.int.fill)) {
-      p<- p + geom_factory(ribbon_func, data, ymin = lower, ymax = upper,
+      p <- p + geom_factory(ribbon_func, data, ymin = lower, ymax = upper,
                            fill = conf.int.fill, alpha = conf.int.alpha, na.rm = TRUE)
     }
     if (conf.int.linetype != 'none') {
@@ -61,6 +61,8 @@ plot_confint <- function (p, data = NULL, lower = 'lower', upper = 'upper',
 #'
 #' @param p \code{ggplot2::ggplot} instance
 #' @param data Data contains text label
+#' @param x x coordinates for label
+#' @param y y coordinates for label
 #' @param label Logical value whether to display labels
 #' @param label.label Column name used for label text
 #' @param label.colour Colour for text labels
@@ -73,7 +75,7 @@ plot_confint <- function (p, data = NULL, lower = 'lower', upper = 'upper',
 #' @param label.hjust Horizontal adjustment for text labels
 #' @param label.vjust Vertical adjustment for text labels
 #' @return ggplot
-plot_label <- function(p, data, label = TRUE, label.label = 'rownames',
+plot_label <- function(p, data, x = NULL, y = NULL, label = TRUE, label.label = 'rownames',
                        label.colour = NULL, label.alpha = NULL,
                        label.size = NULL, label.angle = NULL,
                        label.family = NULL, label.fontface = NULL,
@@ -94,7 +96,7 @@ plot_label <- function(p, data, label = TRUE, label.label = 'rownames',
       # NULL may be explicitly passed from parent functions
       label.colour <- '#000000'
     }
-    p <- p + geom_factory(ggplot2::geom_text, data,
+    p <- p + geom_factory(ggplot2::geom_text, data, x = x, y = y,
                           label = label.label,
                           colour = label.colour, alpha = label.alpha,
                           size = label.size, angle = label.angle,
@@ -119,6 +121,9 @@ plot_label <- function(p, data, label = TRUE, label.label = 'rownames',
 apply_facets <- function(p, formula, facets = TRUE, nrow = NULL, ncol = 1,
                          scales = 'free_y', ...) {
   if (!is.null(formula)) {
+    if (is.character(formula)) {
+      formula <- formula(paste('~', formula))
+    }
     p <- p + ggplot2::facet_wrap(formula, scales = scales,
                                  nrow = nrow, ncol = ncol)
   }
@@ -170,11 +175,14 @@ geom_factory <- function(geomfunc, data, ...) {
   }
   option[['data']] <- data
   option[['mapping']] <- do.call(ggplot2::aes_string, mapping)
-  proto <- do.call(geomfunc, option)
-  return(proto)
+  return(do.call(geomfunc, option))
 }
 
 #' An S4 class to hold multiple \code{ggplot2::ggplot} instances
+#'
+#' @name ggmultiplot-class
+#' @rdname ggmultiplot-class
+#' @exportClass ggmultiplot
 #'
 #' @slot plots List of \code{ggplot2::ggplot} instances
 #' @slot ncol Number of grid columns
@@ -183,6 +191,10 @@ setClass('ggmultiplot',
          representation(plots = 'list', ncol = 'numeric', nrow = 'numeric'),
          prototype = list(ncol = 0, nrow = 0))
 
+# ref:
+# https://stat.ethz.ch/R-manual/R-devel/library/methods/html/setMethod.html
+# https://github.com/variani/pckdev/wiki/Documenting-with-roxygen2
+
 #' Generic add operator for \code{ggmultiplot}
 #'
 #' @param e1 first argument
@@ -190,9 +202,90 @@ setClass('ggmultiplot',
 #' @return \code{ggmultiplot}
 setMethod('+', c('ggmultiplot', 'ANY'),
   function(e1, e2) {
-    plots <- lapply(e1@plots, function(x) { x + e2 })
+    if (is(e2, 'ggmultiplot')) {
+      # concat 2 ggmultiplots using lhs ncol / nrow
+      plots <- c(e1@plots, e2@plots)
+    } else if (is(e2, 'ggplot')) {
+      plots <- c(e1@plots, list(e2))
+    } else {
+      # apply theme / add geom
+      plots <- lapply(e1@plots, function(x) { x + e2 })
+    }
     new('ggmultiplot', plots = plots,
         ncol = e1@ncol, nrow = e1@nrow)
+})
+
+#' @param x \code{ggmultiplot}
+#'
+#' @rdname ggmultiplot-class
+#' @aliases length,ggmultiplot-method
+setMethod('length', 'ggmultiplot',
+  function(x) {
+    return(length(x@plots))
+})
+
+#' @param i elements to extract or replace
+#' @param j not used
+#' @param ... not used
+#' @param drop not used
+#'
+#' @rdname ggmultiplot-class
+#' @aliases [,ggmultiplot-method
+setMethod("[", signature(x = "ggmultiplot"),
+  function(x, i, j, ..., drop) {
+    new('ggmultiplot', plots = x@plots[i],
+        ncol = x@ncol, nrow = x@nrow)
+})
+
+#' @rdname ggmultiplot-class
+#' @aliases [[,ggmultiplot-method
+setMethod("[[", signature(x = "ggmultiplot"),
+  function(x, i, j, ..., drop) {
+    x@plots[[i]]
+})
+
+#' @param value value to be set
+#'
+#' @rdname ggmultiplot-class
+#' @aliases [<-,ggmultiplot-method
+setMethod("[<-", signature(x = "ggmultiplot"),
+  function(x, i, j, ..., value) {
+
+    if (is(value, 'ggmultiplot')) {
+      if (length(value) == length(x@plots[i])) {
+        x@plots[i] <- value@plots
+      } else {
+        stop(paste('Unable to set value, length mismatch:', length(value)))
+      }
+    } else if (is(value, 'ggplot')) {
+      if (length(x@plots[i]) == 1) {
+        x@plots[[i]] <- value
+      } else {
+        stop(paste('Unable to set ggplot to multiple slice'))
+      }
+    } else {
+      stop(paste('Unable to set type, unsupported type:', class(value)))
+    }
+    x
+})
+
+#' @rdname ggmultiplot-class
+#' @aliases [[<-,ggmultiplot-method
+setMethod("[[<-", signature(x = "ggmultiplot"),
+  function(x, i, j, ..., value) {
+
+    if (is(value, 'ggmultiplot')) {
+      if (length(value) == 1) {
+        x@plots[[i]] <- value@plots[[1]]
+      } else {
+        stop(paste('Unable to set value, length mismatch:', length(value)))
+      }
+    } else if (is(value, 'ggplot')) {
+      x@plots[[i]] <- value
+    } else {
+      stop(paste('Unable to set type, unsupported type:', class(value)))
+    }
+    x
 })
 
 #' Calcurate layout matrix for \code{ggmultiplot}
@@ -229,11 +322,12 @@ get.layout <- function(nplots, ncol, nrow) {
 #'
 #' @param x \code{ggmultiplot}
 #' @return NULL
+#'
 #' @importFrom gridExtra grid.arrange
 setMethod('print', 'ggmultiplot',
   function(x) {
-    nplots = length(x@plots)
-    if (nplots==1) {
+    nplots <- length(x@plots)
+    if (nplots == 1) {
       print(x@plots[[1]])
     } else {
       layout <- get.layout(nplots, x@ncol, x@nrow)
@@ -246,8 +340,7 @@ setMethod('print', 'ggmultiplot',
 #'
 #' @param object \code{ggmultiplot}
 #' @return NULL
-setMethod('show', 'ggmultiplot',
-          function(object) { print(object) })
+setMethod('show', 'ggmultiplot', function(object) { print(object) })
 
 
 #' Post process for fortify. Based on \code{ggplot2::qplot}
@@ -285,4 +378,36 @@ post_autoplot <- function(p, xlim = c(NA, NA), ylim = c(NA, NA), log = "",
   if (!all(is.na(ylim)))
     p <- p + ggplot2::ylim(ylim)
   p
+}
+
+#' Check if passed object is supported by \code{ggplot2::autoplot}
+#'
+#' @param obj object
+#' @return logical
+support_autoplot <- function(obj) {
+  maybe_autoplot <- paste0('autoplot.', class(obj))
+  return(any(sapply(maybe_autoplot, function(x) x %in% utils::methods('autoplot'))))
+}
+
+
+#' Autoplot \code{ggplot} instances.
+#' It returns the passed instance as it is.
+#'
+#' @param object ggplot instance
+#' @param ... Not used.
+#' @return ggplot
+#' @export
+autoplot.ggplot <- function(object, ...) {
+  return (object)
+}
+
+#' Autoplot \code{ggmultiplot} instances.
+#' It returns the passed instance as it is.
+#'
+#' @param object ggmultiplot instance
+#' @param ... Not used.
+#' @return ggmultiplot
+#' @export
+autoplot.ggmultiplot <- function(object, ...) {
+  return (object)
 }

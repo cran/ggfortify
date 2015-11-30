@@ -4,6 +4,8 @@ test_that('fortify.forecast works for AirPassengers', {
   d.arima <- forecast::auto.arima(AirPassengers)
   d.forecast <- forecast::forecast(d.arima, level = c(95), h = 50)
 
+  expect_that(ggplot2::autoplot(d.forecast), not(throws_error()))
+
   fortified <- ggplot2::fortify(d.forecast)
   expect_equal(is.data.frame(fortified), TRUE)
 
@@ -21,15 +23,14 @@ test_that('fortify.forecast works for AirPassengers', {
   expect_equal(fortified$Index[1], as.Date('1949-01-01'))
   expect_equal(fortified$Index[nrow(fortified)], as.Date('1965-02-01'))
 
+  p <- autoplot(d.forecast)
+  expect_true(inherits(p, 'ggplot'))
+
+  p <- autoplot(d.forecast, ts.connect = TRUE)
+  expect_true(inherits(p, 'ggplot'))
 })
 
-skip_on_travis <- function() {
-  # use testthat::skip_on_travis once released
-  skip('Skip')
-}
-
 test_that('fortify.arfima works for austres', {
-  skip_on_travis()
 
   fortified <- ggplot2::fortify(forecast::arfima(austres))
   expect_equal(is.data.frame(fortified), TRUE)
@@ -49,7 +50,6 @@ test_that('fortify.arfima works for austres', {
 })
 
 test_that('fortify.ets works for UKgas', {
-  skip_on_travis()
   result <- forecast::ets(UKgas)
   fortified <- ggplot2::fortify(result)
   expect_equal(is.data.frame(fortified), TRUE)
@@ -60,8 +60,10 @@ test_that('fortify.ets works for UKgas', {
 
   p <- ggplot2::autoplot(result)
   expect_true(is(p, 'ggplot'))
-
-  result <- forecast::bats(UKgas)
+})
+  
+test_that('fortify.bats works for UKgas', {
+  result <- forecast::bats(UKgas, use.parallel = FALSE)
   fortified <- ggplot2::fortify(result)
   expect_equal(is.data.frame(fortified), TRUE)
   expected_names <- c('Index', 'Data', 'Fitted', 'Residuals', 'Level', 'Slope', 'Season')
@@ -74,7 +76,6 @@ test_that('fortify.ets works for UKgas', {
 })
 
 test_that('fortify.ets works for austres', {
-  skip_on_travis()
   result <- forecast::ets(austres)
   fortified <- ggplot2::fortify(result)
   expect_equal(is.data.frame(fortified), TRUE)
@@ -85,8 +86,10 @@ test_that('fortify.ets works for austres', {
 
   p <- ggplot2::autoplot(result)
   expect_true(is(p, 'ggplot'))
-
-  result <- forecast::bats(austres)
+})
+  
+test_that('fortify.bats works for austres', {
+  result <- forecast::bats(austres, use.parallel = FALSE)
   fortified <- ggplot2::fortify(result)
   expect_equal(is.data.frame(fortified), TRUE)
   expected_names <- c('Index', 'Data', 'Fitted', 'Residuals', 'Level', 'Slope')

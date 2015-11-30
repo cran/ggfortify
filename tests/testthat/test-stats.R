@@ -107,6 +107,10 @@ test_that('fortify.prcomp works for iris', {
   expect_equal(names(fortified), expected_names)
   expect_equal(data.frame(fortified[c(1, 2, 3, 4, 5)]), iris)
   expect_equal(rownames(fortified), rownames(df))
+
+  tmp <- stats::prcomp(df)
+  class(tmp) <- 'unsupportedClass'
+  expect_error(ggplot2::fortify(tmp, data = iris))
 })
 
 test_that('fortify.princomp works for iris', {
@@ -114,25 +118,7 @@ test_that('fortify.princomp works for iris', {
   pcs <- c('Comp.1', 'Comp.2', 'Comp.3', 'Comp.4')
   expected_names <- c(names(df), pcs)
 
-  fortified <- ggplot2::fortify(stats::princomp(df, center = TRUE, scale = TRUE))
-  expect_equal(is.data.frame(fortified), TRUE)
-  expect_equal(names(fortified), expected_names)
-  expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), df)
-  expect_equal(rownames(fortified), rownames(df))
-
-  fortified <- ggplot2::fortify(stats::princomp(df, center = FALSE, scale = TRUE))
-  expect_equal(is.data.frame(fortified), TRUE)
-  expect_equal(names(fortified), expected_names)
-  expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), df)
-  expect_equal(rownames(fortified), rownames(df))
-
-  fortified <- ggplot2::fortify(stats::princomp(df, center = TRUE, scale = FALSE))
-  expect_equal(is.data.frame(fortified), TRUE)
-  expect_equal(names(fortified), expected_names)
-  expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), df)
-  expect_equal(rownames(fortified), rownames(df))
-
-  fortified <- ggplot2::fortify(stats::princomp(df, center = FALSE, scale = FALSE))
+  fortified <- ggplot2::fortify(stats::princomp(df))
   expect_equal(is.data.frame(fortified), TRUE)
   expect_equal(names(fortified), expected_names)
   expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), df)
@@ -203,25 +189,7 @@ test_that('fortify.princomp works for USArrests', {
   pcs <- c('Comp.1', 'Comp.2', 'Comp.3', 'Comp.4')
   expected_names <- c(names(USArrests), pcs)
 
-  fortified <- ggplot2::fortify(stats::princomp(USArrests, center = TRUE, scale = TRUE))
-  expect_equal(is.data.frame(fortified), TRUE)
-  expect_equal(names(fortified), expected_names)
-  expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), USArrests)
-  expect_equal(rownames(fortified), rownames(USArrests))
-
-  fortified <- ggplot2::fortify(stats::princomp(USArrests, center = FALSE, scale = TRUE))
-  expect_equal(is.data.frame(fortified), TRUE)
-  expect_equal(names(fortified), expected_names)
-  expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), USArrests)
-  expect_equal(rownames(fortified), rownames(USArrests))
-
-  fortified <- ggplot2::fortify(stats::princomp(USArrests, center = TRUE, scale = FALSE))
-  expect_equal(is.data.frame(fortified), TRUE)
-  expect_equal(names(fortified), expected_names)
-  expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), USArrests)
-  expect_equal(rownames(fortified), rownames(USArrests))
-
-  fortified <- ggplot2::fortify(stats::princomp(USArrests, center = FALSE, scale = FALSE))
+  fortified <- ggplot2::fortify(stats::princomp(USArrests))
   expect_equal(is.data.frame(fortified), TRUE)
   expect_equal(names(fortified), expected_names)
   expect_equal(data.frame(fortified[c(1, 2, 3, 4)]), USArrests)
@@ -241,32 +209,34 @@ test_that('fortify.dist works for eurodist', {
   expect_equal(dim(fortified), c(21, 21))
 })
 
-test_that('fortify.lfda works for iris', {
-  library(lfda)
-  k <- iris[,-5]
-  y <- iris[,5]
-  r <- 3
-  model <- lfda(k, y, r, metric = "plain")
-  fortified <- ggplot2::fortify(model)
-  expect_equal(is.data.frame(fortified), TRUE)
+# test_that('fortify.lfda works for iris', {
+#     skip_on_cran()
+#     library(lfda)
+#     k <- iris[,-5]
+#     y <- iris[,5]
+#     r <- 3
+#     model <- lfda(k, y, r, metric = "plain")
+#     fortified <- ggplot2::fortify(model)
+#     expect_equal(is.data.frame(fortified), TRUE)
+#
+#     model <- klfda(kmatrixGauss(k), y, r, metric = "plain")
+#     fortified <- ggplot2::fortify(model)
+#     expect_equal(is.data.frame(fortified), TRUE)
+#
+#     model <- self(k, y, beta=0.1, r, metric = "plain")
+#     fortified <- ggplot2::fortify(model)
+#     expect_equal(is.data.frame(fortified), TRUE)
+# })
 
-  model <- klfda(kmatrixGauss(k), y, r, metric = "plain")
-  fortified <- ggplot2::fortify(model)
-  expect_equal(is.data.frame(fortified), TRUE)
-
-  model <- self(k, y, beta=0.1, r, metric = "plain")
-  fortified <- ggplot2::fortify(model)
-  expect_equal(is.data.frame(fortified), TRUE)
-})
-
-test_that('autoplot.lfda works for iris', {
-  k <- iris[,-5]
-  y <- iris[,5]
-  r <- 4
-  model <- lfda::lfda(k,y,r,metric="plain")
-  p <- autoplot(model, data=iris, frame = TRUE, frame.colour='Species')
-  expect_true(is(p, 'ggplot'))
-})
+# test_that('autoplot.lfda works for iris', {
+#     skip_on_cran()
+#     k <- iris[,-5]
+#     y <- iris[,5]
+#     r <- 4
+#     model <- lfda::lfda(k,y,r,metric="plain")
+#     p <- autoplot(model, data=iris, frame = TRUE, frame.colour='Species')
+#     expect_true(is(p, 'ggplot'))
+# })
 
 test_that('autoplot.acf works', {
 
@@ -284,6 +254,9 @@ test_that('autoplot.acf works', {
 })
 
 test_that('autoplot.stepfun works', {
+
+  expect_that(autoplot(stepfun(c(1, 2, 3), c(4, 5, 6, 7))), not(throws_error()))
+
   fortified <- fortify(stepfun(c(1, 2, 3), c(4, 5, 6, 7)))
   expected <- data.frame(x = c(0, 1, 1, 2, 2, 3, 3, 4),
                          y = c(4, 4, 5, 5, 6, 6, 7, 7))
@@ -304,4 +277,12 @@ test_that('autoplot.stepfun works', {
   expected <- data.frame(x = c(0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 10, 10, 11),
                          y = c(4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 9, 9))
   expect_equal(fortified, expected)
+})
+
+
+test_that('autoplot.spec works', {
+  result <- stats::spec.ar(AirPassengers)
+  expect_that(autoplot(result), not(throws_error()))
+  expect_equal(sum(fortify(result)[1]), 1500, tolerance = 0.01)
+  expect_equal(sum(fortify(result)[2]), 684799.7, tolerance = 0.01)
 })

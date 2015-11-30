@@ -80,7 +80,7 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
   } else if (is_glm) {
     sqrt(summary(object)$dispersion)
   } else {
-    sqrt(stats::deviance(object)/stats::df.residual(object))
+    sqrt(stats::deviance(object) / stats::df.residual(object))
   }
   label.fitted <- ifelse(is_glm, 'Predicted values', 'Fitted values')
   label.y23 <- ifelse(is_glm, 'Std. deviance resid.', 'Standardized residuals')
@@ -104,7 +104,7 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
   }
 
   .smooth <- function(x, y) {
-    stats::lowess(x, y, f = 2/3, iter = 3)
+    stats::lowess(x, y, f = 2 / 3, iter = 3)
   }
 
   .decorate.label <- function(p, data) {
@@ -126,20 +126,24 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
       ggplot2::ggtitle(title)
   }
 
+  smoother_m = ggplot2::aes_string(x = 'x', y = 'y')
+
   if (show[1L]) {
     t1 <- 'Residuals vs Fitted'
     mapping <- ggplot2::aes_string(x = '.fitted', y = '.resid')
     smoother <- .smooth(plot.data$.fitted, plot.data$.resid)
+    smoother <- as.data.frame(smoother)
     p1 <- ggplot2::ggplot(data = plot.data, mapping = mapping)
     if (!is.logical(shape) || shape) {
       p1 <- p1 + geom_factory(geom_point, plot.data,
                               colour = colour, size = size, linetype = linetype,
                               alpha = alpha, fill = fill, shape = shape)
     }
-    p1 <- p1 + ggplot2::geom_line(x = smoother$x, y = smoother$y,
-                                  colour = smooth.colour, linetype = smooth.linetype) +
-      ggplot2::geom_hline(linetype = ad.linetype, size = ad.size,
-                          colour = ad.colour)
+    p1 <- p1 +
+      ggplot2::geom_line(data = smoother, mapping = smoother_m,
+                         colour = smooth.colour, linetype = smooth.linetype) +
+      ggplot2::geom_hline(yintercept = 0L, linetype = ad.linetype,
+                          size = ad.size, colour = ad.colour)
     p1 <- .decorate.label(p1, r.data)
     p1 <- .decorate.plot(p1, xlab = label.fitted, ylab = 'Residuals', title = t1)
   }
@@ -173,13 +177,14 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
     t3 <- 'Scale-Location'
     mapping <- ggplot2::aes_string(x = '.fitted', y = 'sqrt(abs(.stdresid))')
     smoother <- .smooth(plot.data$.fitted, sqrt(abs(plot.data$.stdresid)))
+    smoother <- as.data.frame(smoother)
     p3 <- ggplot2::ggplot(data = plot.data, mapping = mapping)
     if (!is.logical(shape) || shape) {
       p3 <- p3 + geom_factory(geom_point, plot.data,
                               colour = colour, size = size, linetype = linetype,
                               alpha = alpha, fill = fill, shape = shape)
     }
-    p3 <- p3 + ggplot2::geom_line(x = smoother$x, y = smoother$y,
+    p3 <- p3 + ggplot2::geom_line(data = smoother, mapping = smoother_m,
                                   colour = smooth.colour, linetype = smooth.linetype)
     p3 <- .decorate.label(p3, r.data)
     label.y3 <- ifelse(is_glm, expression(sqrt(abs(`Std. deviance resid.`))),
@@ -207,16 +212,17 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
     t5 <- 'Residuals vs Leverage'
     mapping <- ggplot2::aes_string(x = '.hat', y = '.stdresid')
     smoother <- .smooth(plot.data$.hat, plot.data$.stdresid)
+    smoother <- as.data.frame(smoother)
     p5 <- ggplot2::ggplot(data = plot.data, mapping = mapping)
     if (!is.logical(shape) || shape) {
       p5 <- p5 + geom_factory(geom_point, plot.data,
                               colour = colour, size = size, linetype = linetype,
                               alpha = alpha, fill = fill, shape = shape)
     }
-    p5 <- p5 + ggplot2::geom_line(x = smoother$x, y = smoother$y,
+    p5 <- p5 + ggplot2::geom_line(data = smoother, mapping = smoother_m,
                                  colour = smooth.colour, linetype = smooth.linetype) +
-      ggplot2::geom_hline(linetype = ad.linetype, size = ad.size,
-                          colour = ad.colour) +
+      ggplot2::geom_hline(yintercept = 0L, linetype = ad.linetype,
+                          size = ad.size, colour = ad.colour) +
       ggplot2::expand_limits(x = 0)
     p5 <- .decorate.label(p5, cd.data)
     label.y5 <- ifelse(is_glm, 'Std. Pearson resid.', 'Standardized Residuals')
@@ -227,24 +233,25 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
     t6 <- "Cook's dist vs Leverage"
     mapping <- ggplot2::aes_string(x = '.hat', y = '.cooksd')
     smoother <- .smooth(plot.data$.hat, plot.data$.cooksd)
+    smoother <- as.data.frame(smoother)
     p6 <- ggplot2::ggplot(data = plot.data, mapping = mapping)
     if (!is.logical(shape) || shape) {
       p6 <- p6 + geom_factory(geom_point, plot.data,
                               colour = colour, size = size, linetype = linetype,
                               alpha = alpha, fill = fill, shape = shape)
     }
-    p6 <- p6 + ggplot2::geom_line(x = smoother$x, y = smoother$y,
+    p6 <- p6 + ggplot2::geom_line(data = smoother, mapping = smoother_m,
                                   colour = smooth.colour, linetype = smooth.linetype) +
       ggplot2::expand_limits(x = 0, y = 0)
     p6 <- .decorate.label(p6, cd.data)
     p6 <- .decorate.plot(p6, xlab = 'Leverage', ylab = "Cook's distance",
                          title = t6)
 
-    g <- dropInf(hii/(1 - hii), hii)
+    g <- dropInf(hii / (1 - hii), hii)
     p <- length(stats::coef(object))
     bval <- pretty(sqrt(p * plot.data$.cooksd / g), 5)
     for (i in seq_along(bval)) {
-      bi2 <- bval[i]^2
+      bi2 <- bval[i] ^ 2
       p6 <- p6 + ggplot2::geom_abline(intercept=0, slope=bi2,
                                       linetype = ad.linetype, size = ad.size,
                                       colour = ad.colour)
@@ -253,7 +260,6 @@ autoplot.lm <- function(object, which = c(1:3, 5), data = NULL,
 
   if (is.null(ncol)) { ncol <- 0 }
   if (is.null(nrow)) { nrow <- 0 }
-
   plot.list <- list(p1, p2, p3, p4, p5, p6)[which]
   new('ggmultiplot', plots = plot.list, nrow = nrow, ncol = ncol)
 }

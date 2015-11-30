@@ -64,9 +64,9 @@ fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
     else if (!is.function(fun)) {
       stop("Invalid 'fun' argument")
     }
-    d$surv = fun(d$surv)
-    d$upper = fun(d$upper)
-    d$lower = fun(d$lower)
+    d$surv <- fun(d$surv)
+    d$upper <- fun(d$upper)
+    d$lower <- fun(d$lower)
   }
   post_fortify(d)
 }
@@ -75,7 +75,7 @@ fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
 #'
 #' @param object \code{survival::survfit} instance
 #' @param fun an arbitrary function defining a transformation of the survival curve
-#' @param surv.geom geometric string for survival curve. 'line' or 'point'
+#' @param surv.geom geometric string for survival curve. 'step' or line'
 #' @param surv.colour line colour for survival curve
 #' @param surv.size point size for survival curve
 #' @param surv.linetype line type for survival curve
@@ -101,6 +101,7 @@ fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
 #' autoplot(survfit(Surv(time, status) ~ 1, data = lung))
 #' autoplot(survfit(Surv(time, status) ~ sex, data=lung), conf.int = FALSE, censor = FALSE)
 #' autoplot(survfit(coxph(Surv(time, status) ~ sex, data = lung)))
+#' @importFrom scales percent
 #' @export
 autoplot.survfit <- function(object, fun = NULL,
                              surv.geom = 'step',
@@ -117,8 +118,8 @@ autoplot.survfit <- function(object, fun = NULL,
                              main = NULL, xlab = NULL, ylab = NULL, asp = NULL,
                              ...) {
 
-  if (is.data.frame(object)) {
-    # for autoplot.aareg
+  if (is_derived_from(object, 'aareg')) {
+    # for autoplot.aareg, object must be a data.frame
     plot.data <- object
     mapping <- aes_string(x = 'time', y = 'value')
     facets_formula <- ~ variable
@@ -127,7 +128,6 @@ autoplot.survfit <- function(object, fun = NULL,
     }
     # use default
     scale_labels <- ggplot2::waiver()
-
   } else {
     plot.data <- fortify(object, surv.connect = surv.connect, fun = fun)
     mapping <- aes_string(x = 'time', y = 'surv')
@@ -254,6 +254,7 @@ autoplot.aareg <- function (object, maxtime = NULL,
 
   plot.data <- fortify(object, maxtime = maxtime,
                        surv.connect = surv.connect, melt = TRUE)
+  attr(plot.data, 'base_class') <- 'aareg'
   autoplot.survfit(plot.data, facets = facets, ncol = ncol,
                    xlab = '', ylab = '', ...)
 }
