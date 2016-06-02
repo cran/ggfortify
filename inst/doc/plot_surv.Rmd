@@ -1,11 +1,6 @@
----
-title: "Plotting Survival Curves using ggplot2 and ggfortify"
-output: html_document
----
-
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Introduction to ggfortify package}
+%\VignetteIndexEntry{Plotting Survival Curves}
 -->
 
 ```{r global_options, include=FALSE}

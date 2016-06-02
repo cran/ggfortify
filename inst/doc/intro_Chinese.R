@@ -46,17 +46,17 @@ autoplot(fanny(iris[-5], 3), frame = TRUE)
 ## ------------------------------------------------------------------------
 autoplot(pam(iris[-5], 3), frame = TRUE, frame.type = 'norm')
 
-## ---- message = FALSE----------------------------------------------------
-library(lfda)
+## ---- message = FALSE, eval = FALSE--------------------------------------
+#  library(lfda)
+#  
+#  # Fisher局部判别分析 (LFDA)
+#  model <- lfda(iris[-5], iris[, 5], 4, metric="plain")
+#  autoplot(model, data = iris, frame = TRUE, frame.colour = 'Species')
 
-# Fisher局部判别分析 (LFDA)
-model <- lfda(iris[-5], iris[, 5], 4, metric="plain")
-autoplot(model, data = iris, frame = TRUE, frame.colour = 'Species')
-
-## ---- message = FALSE----------------------------------------------------
-# 半监督Fisher局部判别分析 (SELF)
-model <- self(iris[-5], iris[, 5], beta = 0.1, r = 3, metric="plain")
-autoplot(model, data = iris, frame = TRUE, frame.colour = 'Species')
+## ---- message = FALSE, eval = FALSE--------------------------------------
+#  # 半监督Fisher局部判别分析 (SELF)
+#  model <- self(iris[-5], iris[, 5], beta = 0.1, r = 3, metric="plain")
+#  autoplot(model, data = iris, frame = TRUE, frame.colour = 'Species')
 
 ## ---- message = FALSE----------------------------------------------------
 library(ggfortify)

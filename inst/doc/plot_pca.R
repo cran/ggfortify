@@ -25,6 +25,9 @@ autoplot(prcomp(df), data = iris, colour = 'Species',
          loadings.label = TRUE, loadings.label.size = 3)
 
 ## ---- message = FALSE----------------------------------------------------
+autoplot(prcomp(df), scale = 0)
+
+## ---- message = FALSE----------------------------------------------------
 d.factanal <- factanal(state.x77, factors = 3, scores = 'regression')
 autoplot(d.factanal, data = state.x77, colour = 'Income')
 autoplot(d.factanal, label = TRUE, label.size = 3,

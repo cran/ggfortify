@@ -28,7 +28,23 @@ autoplot(as.timeSeries(AirPassengers), ts.colour = ('dodgerblue3'))
 autoplot(AirPassengers, ts.geom = 'bar', fill = 'blue')
 
 ## ---- message = FALSE----------------------------------------------------
+autoplot(AirPassengers, ts.geom = 'ribbon', fill = 'green')
+
+## ---- message = FALSE----------------------------------------------------
 autoplot(AirPassengers, ts.geom = 'point', shape = 3)
+
+## ---- message = FALSE----------------------------------------------------
+mts <- ts(data.frame(a = c(1, 2, 3, 4, 4, 3), b = c(3, 2, 3, 2, 2, 1)), start = 2010)
+autoplot(mts, ts.geom = 'bar', facets = FALSE)
+
+## ---- message = FALSE----------------------------------------------------
+autoplot(mts, ts.geom = 'bar', facets = FALSE, stacked = TRUE)
+
+## ---- message = FALSE----------------------------------------------------
+autoplot(mts, ts.geom = 'ribbon', facets = FALSE)
+
+## ---- message = FALSE----------------------------------------------------
+autoplot(mts, ts.geom = 'ribbon', facets = FALSE, stacked = TRUE)
 
 ## ---- message = FALSE----------------------------------------------------
 library(forecast)

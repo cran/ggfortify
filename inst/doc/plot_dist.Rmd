@@ -1,11 +1,6 @@
----
-title: "Plotting Probability Distributions with ggplot2 and ggfortify"
-output: pdf_document
----
-
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Introduction to ggfortify package}
+%\VignetteIndexEntry{Plotting Probability Distributions}
 -->
 
 ```{r global_options, include=FALSE}

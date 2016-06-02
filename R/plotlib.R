@@ -74,13 +74,15 @@ plot_confint <- function (p, data = NULL, lower = 'lower', upper = 'upper',
 #' @param label.lineheight Lineheight for text labels
 #' @param label.hjust Horizontal adjustment for text labels
 #' @param label.vjust Vertical adjustment for text labels
+#' @param label.repel Logical flag indicating whether to use \code{ggrepel}, enabling this may take some time for plotting
 #' @return ggplot
 plot_label <- function(p, data, x = NULL, y = NULL, label = TRUE, label.label = 'rownames',
                        label.colour = NULL, label.alpha = NULL,
                        label.size = NULL, label.angle = NULL,
                        label.family = NULL, label.fontface = NULL,
                        label.lineheight = NULL,
-                       label.hjust = NULL, label.vjust = NULL) {
+                       label.hjust = NULL, label.vjust = NULL,
+                       label.repel = FALSE) {
 
   if (!is.data.frame(data)) {
     stop(paste0('Unsupported class: ', class(data)))
@@ -91,12 +93,18 @@ plot_label <- function(p, data, x = NULL, y = NULL, label = TRUE, label.label = 
     label <- TRUE
   }
 
-  if (label) {
+  if (label || label.repel) {
+    # user wants label if they enables repel
     if (is.null(label.colour)) {
       # NULL may be explicitly passed from parent functions
       label.colour <- '#000000'
     }
-    p <- p + geom_factory(ggplot2::geom_text, data, x = x, y = y,
+    if (label.repel && 'ggrepel' %in% rownames(installed.packages())) {
+      textfunc <- ggrepel::geom_text_repel
+    } else {
+      textfunc <- ggplot2::geom_text
+    }
+    p <- p + geom_factory(textfunc, data, x = x, y = y,
                           label = label.label,
                           colour = label.colour, alpha = label.alpha,
                           size = label.size, angle = label.angle,
@@ -140,16 +148,27 @@ apply_facets <- function(p, formula, facets = TRUE, nrow = NULL, ncol = 1,
 #' ggfortify:::get_geom_function('point')
 #' ggfortify:::get_geom_function('line', allowed = c('line'))
 get_geom_function <- function(geom, allowed = c('line', 'bar', 'point')) {
-  if (geom == 'line' && 'line' %in% allowed) {
-    return(ggplot2::geom_line)
-  } else if (geom == 'bar' && 'bar' %in% allowed) {
-    return(ggplot2::geom_bar)
-  } else if (geom == 'point' && 'point' %in% allowed) {
-    return(ggplot2::geom_point)
-  } else if (geom == 'step' && 'step' %in% allowed) {
-    return(ggplot2::geom_step)
+
+  if (!(geom %in% allowed)) {
+    stop(paste("Invalid geom is specified. Use", paste(allowed, collapse=', ')))
   }
-  stop(paste("Invalid geom is specified. Use", allowed))
+  # ToDo: may better to use layer directly?
+  if (geom == 'line') {
+    return(ggplot2::geom_line)
+  } else if (geom == 'bar') {
+    return(ggplot2::geom_bar)
+  } else if (geom == 'point') {
+    return(ggplot2::geom_point)
+  } else if (geom == 'step') {
+    return(ggplot2::geom_step)
+  } else if (geom == 'ribbon') {
+    return(ggplot2::geom_ribbon)
+  } else if (geom == 'polygon') {
+    return(ggplot2::geom_polygon)
+  } else if (geom == 'path') {
+    return(ggplot2::geom_path)
+  }
+  stop(paste("Invalid geom is specified. Use", paste(allowed, collapse=', ')))
 }
 
 #' Factory function to control \code{ggplot2::geom_xxx} functions
@@ -158,7 +177,7 @@ get_geom_function <- function(geom, allowed = c('line', 'bar', 'point')) {
 #' @param data plotting data
 #' @param ... other arguments passed to methods
 #' @return proto
-geom_factory <- function(geomfunc, data, ...) {
+geom_factory <- function(geomfunc, data = NULL, ...) {
   mapping <- list()
   option <- list()
 
@@ -173,7 +192,9 @@ geom_factory <- function(geomfunc, data, ...) {
         option[[key]] <- value
       }
   }
-  option[['data']] <- data
+  if (!is.null(data)) {
+    option[['data']] <- data
+  }
   option[['mapping']] <- do.call(ggplot2::aes_string, mapping)
   return(do.call(geomfunc, option))
 }
@@ -410,4 +431,170 @@ autoplot.ggplot <- function(object, ...) {
 #' @export
 autoplot.ggmultiplot <- function(object, ...) {
   return (object)
+}
+
+#' Draw \code{biplot} using \code{ggplot2}.
+#'
+#' @param plot.data data.frame
+#' @param loadings.data data.frame
+#' @param colour colour
+#' @param size size
+#' @param linetype line type
+#' @param alpha alpha
+#' @param fill fill
+#' @param shape shape
+#' @param label Logical value whether to display data labels
+#' @inheritParams plot_label
+#' @param loadings Logical value whether to display loadings arrows
+#' @param loadings.colour Point colour for data
+#' @param loadings.label Logical value whether to display loadings labels
+#' @param loadings.label.label Column name used for loadings text labels
+#' @param loadings.label.colour Colour for loadings text labels
+#' @param loadings.label.alpha Alpha for loadings text labels
+#' @param loadings.label.size Size for loadings text labels
+#' @param loadings.label.angle Angle for loadings text labels
+#' @param loadings.label.family Font family for loadings text labels
+#' @param loadings.label.fontface Fontface for loadings text labels
+#' @param loadings.label.lineheight Lineheight for loadings text labels
+#' @param loadings.label.hjust Horizontal adjustment for loadings text labels
+#' @param loadings.label.vjust Vertical adjustment for loadings text labels
+#' @param loadings.label.repel Logical flag indicating whether to use \code{ggrepel} automatically
+#' @param frame Logical value whether to draw outliner convex / ellipse
+#' @param frame.type Character specifying frame type.
+#' 'convex' or types supporeted by \code{ggplot2::stat_ellipse} can be used.
+#' @param frame.colour Colour for frame
+#' @param frame.level Passed for \code{ggplot2::stat_ellipse} 's level. Ignored in 'convex'.
+#' @param frame.alpha Alpha for frame
+#' @inheritParams post_autoplot
+#' @param ... other arguments passed to methods
+#' @return ggplot
+#' @export
+ggbiplot <- function(plot.data, loadings.data = NULL,
+                     colour = NULL, size = NULL, linetype = NULL,
+                     alpha = NULL, fill = NULL, shape = NULL,
+                     label = FALSE,
+                     label.label = 'rownames',
+                     label.colour = colour,
+                     label.alpha = NULL,
+                     label.size = NULL,
+                     label.angle = NULL,
+                     label.family = NULL,
+                     label.fontface = NULL,
+                     label.lineheight = NULL,
+                     label.hjust = NULL,
+                     label.vjust = NULL,
+                     label.repel = FALSE,
+                     loadings = FALSE,
+                     loadings.colour = '#FF0000',
+                     loadings.label = FALSE,
+                     loadings.label.label = 'rownames',
+                     loadings.label.colour = '#FF0000',
+                     loadings.label.alpha = NULL,
+                     loadings.label.size = NULL,
+                     loadings.label.angle = NULL,
+                     loadings.label.family = NULL,
+                     loadings.label.fontface = NULL,
+                     loadings.label.lineheight = NULL,
+                     loadings.label.hjust = NULL,
+                     loadings.label.vjust = NULL,
+                     loadings.label.repel = FALSE,
+                     frame = FALSE, frame.type = NULL,
+                     frame.colour = colour, frame.level = 0.95,
+                     frame.alpha = 0.2,
+                     xlim = c(NA, NA), ylim = c(NA, NA), log = "",
+                     main = NULL, xlab = NULL, ylab = NULL, asp = NULL,
+                     ...) {
+
+  plot.columns <- colnames(plot.data)
+  mapping <- ggplot2::aes_string(x = plot.columns[1L], y = plot.columns[2L])
+
+  if (is.logical(shape) && !shape && missing(label)) {
+    # if shape=FALSE, turn label to TRUE
+    label <- TRUE
+  }
+
+  p <- ggplot2::ggplot(data = plot.data, mapping = mapping)
+  if (!is.logical(shape) || shape) {
+    p <- p + geom_factory(ggplot2::geom_point, plot.data,
+                          colour = colour, size = size, linetype = linetype,
+                          alpha = alpha, fill = fill, shape = shape)
+  }
+  p <- plot_label(p = p, data = plot.data, label = label,
+                  label.label = label.label,
+                  label.colour = label.colour,
+                  label.alpha = label.alpha,
+                  label.size = label.size,
+                  label.angle = label.angle,
+                  label.family = label.family,
+                  label.fontface = label.fontface,
+                  label.lineheight = label.lineheight,
+                  label.hjust = label.hjust,
+                  label.vjust = label.vjust,
+                  label.repel = label.repel)
+
+  if (loadings.label && !loadings) {
+    # If loadings.label is TRUE, draw loadings
+    loadings <- TRUE
+  }
+  if (loadings && !is.null(loadings.data)) {
+
+    scaler <- min(max(abs(plot.data[, 1L])) / max(abs(loadings.data[, 1L])),
+                  max(abs(plot.data[, 2L])) / max(abs(loadings.data[, 2L])))
+
+    loadings.columns <- colnames(loadings.data)
+    loadings.mapping <- ggplot2::aes_string(x = 0, y = 0,
+                                            xend = loadings.columns[1L],
+                                            yend = loadings.columns[2L])
+    loadings.data[, 1L:2L] <- loadings.data[, 1L:2L] * scaler * 0.8
+
+    p <- p + geom_segment(data = loadings.data,
+                          mapping = loadings.mapping,
+                          arrow = grid::arrow(length = grid::unit(8, 'points')),
+                          colour = loadings.colour)
+    p <- plot_label(p = p, data = loadings.data, label = loadings.label,
+                    label.label = loadings.label.label,
+                    label.colour = loadings.label.colour,
+                    label.alpha = loadings.label.alpha,
+                    label.size = loadings.label.size,
+                    label.angle = loadings.label.angle,
+                    label.family = loadings.label.family,
+                    label.fontface = loadings.label.fontface,
+                    label.lineheight = loadings.label.lineheight,
+                    label.hjust = loadings.label.hjust,
+                    label.vjust = loadings.label.vjust,
+                    label.repel = loadings.label.repel)
+  }
+
+  if (missing(frame) && !is.null(frame.type)) {
+    # if frame is missing but frame.type is specified, turn frame to TRUE
+    frame <- TRUE
+  }
+
+  # dummy to solve "no visible binding for global variable '.'" warnings
+  . <- NULL
+
+  if (frame) {
+    if (is.null(frame.type) || frame.type == 'convex') {
+      if (is.null(frame.colour) || !(frame.colour %in% colnames(plot.data))) {
+        hulls <- plot.data[grDevices::chull(plot.data[, 1L:2L]), ]
+      } else {
+        hulls <- plot.data %>%
+          dplyr::group_by_(frame.colour) %>%
+          dplyr::do(.[grDevices::chull(.[, 1L:2L]), ])
+      }
+      mapping <- aes_string(colour = frame.colour, fill = frame.colour)
+      p <- p + ggplot2::geom_polygon(data = hulls, mapping = mapping,
+                                     alpha = frame.alpha)
+    } else if (frame.type %in% c('t', 'norm', 'euclid')) {
+      mapping <- aes_string(colur = frame.colour, fill = frame.colour)
+      p <- p + ggplot2::stat_ellipse(mapping = mapping,
+                                     level = frame.level, type = frame.type,
+                                     geom = 'polygon', alpha = frame.alpha)
+    } else {
+      stop('frame.type must be convex, t, norm or euclid')
+    }
+  }
+  p <- post_autoplot(p = p, xlim = xlim, ylim = ylim, log = log,
+                     main = main, xlab = xlab, ylab = ylab, asp = asp)
+  return(p)
 }

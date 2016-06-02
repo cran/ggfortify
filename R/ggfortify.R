@@ -4,7 +4,9 @@
 #'
 #' @name ggfortify
 #' @docType package
-#' @import methods proto ggplot2 dplyr
+#' @import methods ggplot2 dplyr
 #' @importFrom tidyr gather_
 #' @importFrom gridExtra grid.arrange
+#' @importFrom utils installed.packages
+#' @importFrom stats complete.cases
 NULL

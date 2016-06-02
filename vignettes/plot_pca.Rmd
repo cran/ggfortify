@@ -1,11 +1,6 @@
----
-title: "Plotting PCA, clustering, LFDA and MDS results using ggplot2 and ggfortify"
-output: html_document
----
-
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Introduction to ggfortify package}
+%\VignetteIndexEntry{Plotting PCA, clustering, LFDA and MDS results}
 -->
 
 ```{r global_options, include=FALSE}
@@ -55,6 +50,12 @@ You can attach eigenvector labels and change some options.
 autoplot(prcomp(df), data = iris, colour = 'Species',
          loadings = TRUE, loadings.colour = 'blue',
          loadings.label = TRUE, loadings.label.size = 3)
+```
+
+By default, each component are scaled as the same as standard ``biplot``. You can disable the scaling by specifying ``scale = 0``
+
+```{r, message = FALSE}
+autoplot(prcomp(df), scale = 0)
 ```
 
 # Plotting Factor Analysis
