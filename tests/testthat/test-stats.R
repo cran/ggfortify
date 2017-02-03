@@ -214,6 +214,9 @@ test_that('fortify.princomp works for USArrests', {
 
 test_that('autoplot.prcomp works for iris with scale (default)', {
 
+  # fails on CRAN i386 because components are inversed.
+  skip_on_cran()
+
   obj <- stats::prcomp(iris[-5])
 
   exp_x <- c(-0.10658039, -0.10777226, -0.11471510, -0.10901118, -0.10835099, -0.09056763)
@@ -307,6 +310,9 @@ test_that('autoplot.prcomp works for iris with scale (default)', {
 })
 
 test_that('autoplot.prcomp works for iris without scale', {
+
+  # fails on CRAN i386 because components are inversed.
+  skip_on_cran()
 
   obj <- stats::prcomp(iris[-5])
 
@@ -476,6 +482,52 @@ test_that('autoplot.princomp works for iris', {
 
 })
 
+test_that('autoplot.prcomp plots the desired components', {
+
+  obj <- stats::prcomp(iris[-5])
+
+  exp_x <- c(-0.0126825223275179, 0.00702830726589863, 0.00575560482235143,
+             0.0126389126842801, -0.0129746622747112, -0.0294365091522609)
+  exp_y <- c(0.00462679871185076, 0.0348838201207289, -0.00296691364551725,
+             -0.00523087125212831, -0.0149303631846485, -0.0279578145062899
+  )
+
+  p <- ggplot2::autoplot(obj, x = 2, y = 3)
+  expect_true(is(p, 'ggplot'))
+  expect_equal(length(p$layers), 1)
+  expect_true('GeomPoint' %in% class(p$layers[[1]]$geom))
+  ld <- head(ggplot2:::layer_data(p, 1))
+  expect_equal(ld$x, exp_x, tolerance = 1e-4)
+  expect_equal(ld$y, exp_y, tolerance = 1e-4)
+  expect_equal(ld$colour, rep('black', 6))
+  expect_equal(p$labels$x, "PC2")
+  expect_equal(p$labels$y, "PC3")
+
+})
+
+test_that('autoplot.princomp plots the desired components', {
+
+  obj <- stats::princomp(iris[-5])
+
+  exp_x <- c(-0.0126825223275179, 0.00702830726589863, 0.00575560482235143,
+             0.0126389126842801, -0.0129746622747112, -0.0294365091522609)
+  exp_y <- c(-0.00464229891845705, -0.0350006841670721, 0.00297685308255621,
+             0.00524839515800552, 0.014980381291871, 0.0280514757887639)
+
+
+  p <- ggplot2::autoplot(obj, x = 2, y = 3)
+  expect_true(is(p, 'ggplot'))
+  expect_equal(length(p$layers), 1)
+  expect_true('GeomPoint' %in% class(p$layers[[1]]$geom))
+  ld <- head(ggplot2:::layer_data(p, 1))
+  expect_equal(ld$x, exp_x, tolerance = 1e-4)
+  expect_equal(ld$y, exp_y, tolerance = 1e-4)
+  expect_equal(ld$colour, rep('black', 6))
+  expect_equal(p$labels$x, "Comp.2")
+  expect_equal(p$labels$y, "Comp.3")
+
+})
+
 test_that('autoplot.factanal works for state.x77', {
 
   obj <- stats::factanal(state.x77, factors = 3, scores = 'regression')
@@ -491,6 +543,19 @@ test_that('autoplot.factanal works for state.x77', {
   expect_true('GeomPoint' %in% class(p$layers[[1]]$geom))
   expect_true('GeomText' %in% class(p$layers[[2]]$geom))
 
+})
+
+
+test_that('autoplot.factanal plots the desired components', {
+
+  obj <- stats::factanal(state.x77, factors = 3, scores = 'regression')
+
+  p <- ggplot2::autoplot(obj, x = 2, y = 3)
+  expect_true(is(p, 'ggplot'))
+  expect_equal(length(p$layers), 1)
+  expect_true('GeomPoint' %in% class(p$layers[[1]]$geom))
+  expect_equal(p$labels$x, "Factor2")
+  expect_equal(p$labels$y, "Factor3")
 })
 
 test_that('fortify.dist works for eurodist', {
@@ -522,7 +587,7 @@ test_that('autoplot.lfda works for iris', {
     k <- iris[, -5]
     y <- iris[, 5]
     r <- 4
-    model <- lfda::lfda(k,y,r,metric="plain")
+    model <- lfda::lfda(k, y, r, metric = "plain")
     p <- autoplot(model, data=iris, frame = TRUE, frame.colour='Species')
     expect_true(is(p, 'ggplot'))
 })
@@ -544,7 +609,8 @@ test_that('autoplot.acf works', {
 
 test_that('autoplot.stepfun works', {
 
-  expect_that(autoplot(stepfun(c(1, 2, 3), c(4, 5, 6, 7))), not(throws_error()))
+  p <- autoplot(stepfun(c(1, 2, 3), c(4, 5, 6, 7)))
+  expect_true(is(p, 'ggplot'))
 
   fortified <- fortify(stepfun(c(1, 2, 3), c(4, 5, 6, 7)))
   expected <- data.frame(x = c(0, 1, 1, 2, 2, 3, 3, 4),
@@ -571,7 +637,9 @@ test_that('autoplot.stepfun works', {
 
 test_that('autoplot.spec works', {
   result <- stats::spec.ar(AirPassengers)
-  expect_that(autoplot(result), not(throws_error()))
+  p <- autoplot(result)
+  expect_true(is(p, 'ggplot'))
+
   expect_equal(sum(fortify(result)[1]), 1500, tolerance = 0.01)
   expect_equal(sum(fortify(result)[2]), 684799.7, tolerance = 0.01)
 })

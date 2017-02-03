@@ -144,7 +144,7 @@ fortify.prcomp <- function(model, data = NULL, ...) {
     values <- model$x %*% t(model$rotation)
   } else if (is(model, 'princomp')) {
     d <- as.data.frame(model$scores)
-    values <- model$scores %*% t(model$loadings[,])
+    values <- model$scores %*% t(model$loadings[, ])
   } else {
     stop(paste0('Unsupported class for fortify.pca_common: ', class(model)))
   }
@@ -193,7 +193,9 @@ fortify.factanal <- function(model, data = NULL, ...) {
 #' @export
 fortify.lfda <- function(model, data = NULL, ...) {
 
-  if(!is(model, 'lfda')){stop('model is not a lfda object')}
+  if (!is(model, 'lfda')) {
+    stop('model is not a lfda object')
+  }
 
   model <- stats::prcomp(model$Z)
 
@@ -212,6 +214,8 @@ fortify.lfda <- function(model, data = NULL, ...) {
 #' @param object PCA-like instance
 #' @param data Joined to fitting result if provided.
 #' @param scale scaling parameter, disabled by 0
+#' @param x principal component number used in x axis
+#' @param y principal component number used in y axis
 #' @param ... other arguments passed to \code{ggbiplot}
 #' @inheritParams ggbiplot
 #' @inheritParams plot_label
@@ -239,35 +243,40 @@ fortify.lfda <- function(model, data = NULL, ...) {
 #' autoplot(d.factanal, label = TRUE, loadings = TRUE, loadings.label = TRUE)
 #' @export
 autoplot.pca_common <- function(object, data = NULL,
-                                scale = 1.0, ...) {
+                                scale = 1.0, x = 1, y = 2, ...) {
 
   plot.data <- ggplot2::fortify(object, data = data)
   plot.data$rownames <- rownames(plot.data)
 
   if (is_derived_from(object, 'prcomp')) {
-    x.column <- 'PC1'
-    y.column <- 'PC2'
+
+    PC <- paste0("PC", c(x, y))
+    x.column <- PC[1]
+    y.column <- PC[2]
     loadings.column <- 'rotation'
 
     lam <- object$sdev[1L:2L]
     lam <- lam * sqrt(nrow(plot.data))
 
   } else if (is_derived_from(object, 'princomp')) {
-    x.column <- 'Comp.1'
-    y.column <- 'Comp.2'
+    PC <- paste0("Comp.", c(x, y))
+    x.column <- PC[1]
+    y.column <- PC[2]
     loadings.column <- 'loadings'
 
     lam <- object$sdev[1L:2L]
     lam <- lam * sqrt(nrow(plot.data))
 
   } else if (is_derived_from(object, 'factanal')) {
-    x.column <- 'Factor1'
-    y.column <- 'Factor2'
+    PC <- paste0("Factor", c(x, y))
+    x.column <- PC[1]
+    y.column <- PC[2]
     scale <- 0
     loadings.column <- 'loadings'
   } else if (is_derived_from(object, 'lfda')) {
-    x.column <- 'PC1'
-    y.column <- 'PC2'
+    PC <- paste0("PC", c(x, y))
+    x.column <- PC[1]
+    y.column <- PC[2]
     scale <- 0
     loadings.column <- NULL
   } else {
