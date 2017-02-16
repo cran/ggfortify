@@ -1,8 +1,8 @@
 Package: ggfortify
 Type: Package
 Title: Data Visualization Tools for Statistical Analysis Results
-Version: 0.4.0
-Date: 2017-02-03
+Version: 0.4.1
+Date: 2017-02-15
 Authors@R: c(
   person("Masaaki", "Horikoshi", role = c("aut", "cre"),
          email = "sinhrks@gmail.com"),
@@ -27,8 +27,8 @@ Suggests: testthat, cluster, changepoint, dlm, fGarch, forecast,
         timeSeries, tseries, utils, vars, xts, zoo, lfda
 RoxygenNote: 6.0.0
 NeedsCompilation: no
-Packaged: 2017-02-03 08:44:16 UTC; masaaki.horikoshi
+Packaged: 2017-02-16 10:02:48 UTC; masaaki.horikoshi
 Author: Masaaki Horikoshi [aut, cre],
   Yuan Tang [aut, cph]
 Repository: CRAN
-Date/Publication: 2017-02-03 14:33:02
+Date/Publication: 2017-02-16 11:18:07
