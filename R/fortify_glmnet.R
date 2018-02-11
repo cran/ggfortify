@@ -40,7 +40,8 @@ autoplot.glmnet <- function (object,
                              ylab = 'Coefficients', asp = NULL,
                              ...) {
   beta <- as.matrix(object$beta)
-  xvar <- 'norm'
+  xvar <- match.arg(xvar)
+
   switch(xvar, norm = {
     index <- apply(abs(beta), 2, sum)
     iname <- "L1 Norm"

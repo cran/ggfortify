@@ -17,12 +17,12 @@ autoplot(Canada)
 ## ------------------------------------------------------------------------
 autoplot(Canada, facets = FALSE)
 
-## ---- message = FALSE----------------------------------------------------
-library(xts)
-autoplot(as.xts(AirPassengers), ts.colour = 'green')
-
-library(timeSeries)
-autoplot(as.timeSeries(AirPassengers), ts.colour = ('dodgerblue3'))
+## ---- message = FALSE, eval = FALSE--------------------------------------
+#  library(xts)
+#  autoplot(as.xts(AirPassengers), ts.colour = 'green')
+#  
+#  library(timeSeries)
+#  autoplot(as.timeSeries(AirPassengers), ts.colour = ('dodgerblue3'))
 
 ## ---- message = FALSE----------------------------------------------------
 autoplot(AirPassengers, ts.geom = 'bar', fill = 'blue')
@@ -140,9 +140,6 @@ ggcpgram(arima.sim(list(ar = c(0.7, -0.5)), n = 50))
 ## ---- message = FALSE, fig.width = 5, fig.height = 5---------------------
 library(forecast)
 ggtsdiag(auto.arima(AirPassengers))
-
-## ---- message = FALSE, fig.width = 4, fig.height = 4---------------------
-gglagplot(AirPassengers, lags = 4)
 
 ## ---- message = FALSE, fig.width = 4, fig.height = 4---------------------
 ggfreqplot(AirPassengers)

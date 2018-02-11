@@ -492,10 +492,10 @@ test_that('autoplot.prcomp plots the desired components', {
 
   obj <- stats::prcomp(iris[-5])
 
-  exp_x <- c(-0.0126825223275179, 0.00702830726589863, 0.00575560482235143,
-             0.0126389126842801, -0.0129746622747112, -0.0294365091522609)
-  exp_y <- c(0.00462679871185076, 0.0348838201207289, -0.00296691364551725,
-             -0.00523087125212831, -0.0149303631846485, -0.0279578145062899
+  exp_x <- c(-0.0529391329513015, 0.0293374206773287, 0.0240249314006331,
+             0.0527570984441502, -0.0541585777198945, -0.1228732921883)
+  exp_y <- c(0.00815003672083961, 0.0614473273321588, -0.00522617400592586,
+             -0.00921410146450414, -0.0262996114135432, -0.0492472720451544
   )
 
   p <- ggplot2::autoplot(obj, x = 2, y = 3)
@@ -506,8 +506,8 @@ test_that('autoplot.prcomp plots the desired components', {
   expect_equal(ld$x, exp_x, tolerance = 1e-4)
   expect_equal(ld$y, exp_y, tolerance = 1e-4)
   expect_equal(ld$colour, rep('black', 6))
-  expect_equal(p$labels$x, "PC2")
-  expect_equal(p$labels$y, "PC3")
+  expect_equal(p$labels$x, "PC2 (5.31%)")
+  expect_equal(p$labels$y, "PC3 (1.71%)")
 
 })
 
@@ -518,10 +518,10 @@ test_that('autoplot.princomp plots the desired components', {
 
   obj <- stats::princomp(iris[-5])
 
-  exp_x <- c(-0.0126825223275179, 0.00702830726589863, 0.00575560482235143,
-             0.0126389126842801, -0.0129746622747112, -0.0294365091522609)
-  exp_y <- c(-0.00464229891845705, -0.0350006841670721, 0.00297685308255621,
-             0.00524839515800552, 0.014980381291871, 0.0280514757887639)
+  exp_x <- c(-0.0531164839772263, 0.0294357037689672, 0.0241054171584106,
+             0.052933839637522, -0.0543400139993682, -0.123284929161055)
+  exp_y <- c(-0.00817734010291634, -0.0616531816016784, 0.00524368217559065,
+             0.00924496956257505, 0.0263877175612184, 0.0494122549931978)
 
 
   p <- ggplot2::autoplot(obj, x = 2, y = 3)
@@ -532,8 +532,8 @@ test_that('autoplot.princomp plots the desired components', {
   expect_equal(ld$x, exp_x, tolerance = 1e-4)
   expect_equal(ld$y, exp_y, tolerance = 1e-4)
   expect_equal(ld$colour, rep('black', 6))
-  expect_equal(p$labels$x, "Comp.2")
-  expect_equal(p$labels$y, "Comp.3")
+  expect_equal(p$labels$x, "Comp.2 (5.31%)")
+  expect_equal(p$labels$y, "Comp.3 (1.71%)")
 
 })
 
@@ -563,8 +563,8 @@ test_that('autoplot.factanal plots the desired components', {
   expect_true(is(p, 'ggplot'))
   expect_equal(length(p$layers), 1)
   expect_true('GeomPoint' %in% class(p$layers[[1]]$geom))
-  expect_equal(p$labels$x, "Factor2")
-  expect_equal(p$labels$y, "Factor3")
+  expect_equal(p$labels$x, "Factor2 (20.15%)")
+  expect_equal(p$labels$y, "Factor3 (18.24%)")
 })
 
 test_that('fortify.dist works for eurodist', {
@@ -574,31 +574,31 @@ test_that('fortify.dist works for eurodist', {
 })
 
 test_that('fortify.lfda works for iris', {
-    skip_on_cran()
-    library(lfda)
-    k <- iris[, -5]
-    y <- iris[, 5]
-    r <- 3
-    model <- lfda(k, y, r, metric = "plain")
-    fortified <- ggplot2::fortify(model)
-    expect_true(is.data.frame(fortified))
-    model <- klfda(kmatrixGauss(k), y, r, metric = "plain")
-    fortified <- ggplot2::fortify(model)
-    expect_true(is.data.frame(fortified))
-    model <- self(k, y, beta=0.1, r, metric = "plain")
-    fortified <- ggplot2::fortify(model)
-    expect_true(is.data.frame(fortified))
+  skip_on_cran()
+  library(lfda)
+  k <- iris[, -5]
+  y <- iris[, 5]
+  r <- 3
+  model <- lfda(k, y, r, metric = "plain")
+  fortified <- ggplot2::fortify(model)
+  expect_true(is.data.frame(fortified))
+  model <- klfda(kmatrixGauss(k), y, r, metric = "plain")
+  fortified <- ggplot2::fortify(model)
+  expect_true(is.data.frame(fortified))
+  model <- self(k, y, beta=0.1, r, metric = "plain")
+  fortified <- ggplot2::fortify(model)
+  expect_true(is.data.frame(fortified))
 })
 
 test_that('autoplot.lfda works for iris', {
-    skip_on_cran()
+  skip_on_cran()
 
-    k <- iris[, -5]
-    y <- iris[, 5]
-    r <- 4
-    model <- lfda::lfda(k, y, r, metric = "plain")
-    p <- autoplot(model, data=iris, frame = TRUE, frame.colour='Species')
-    expect_true(is(p, 'ggplot'))
+  k <- iris[, -5]
+  y <- iris[, 5]
+  r <- 4
+  model <- lfda::lfda(k, y, r, metric = "plain")
+  p <- autoplot(model, data=iris, frame = TRUE, frame.colour='Species')
+  expect_true(is(p, 'ggplot'))
 })
 
 test_that('autoplot.acf works', {
