@@ -80,6 +80,7 @@ plot_confint <- function (p, data = NULL, lower = 'lower', upper = 'upper',
 #' @param label.hjust Horizontal adjustment for text labels
 #' @param label.vjust Vertical adjustment for text labels
 #' @param label.repel Logical flag indicating whether to use \code{ggrepel}, enabling this may take some time for plotting
+#' @param label.show.legend Logical value indicating whether to show the legend of the text labels
 #' @return ggplot
 plot_label <- function(p, data, x = NULL, y = NULL, label = TRUE, label.label = 'rownames',
                        label.colour = NULL, label.alpha = NULL,
@@ -87,7 +88,7 @@ plot_label <- function(p, data, x = NULL, y = NULL, label = TRUE, label.label = 
                        label.family = NULL, label.fontface = NULL,
                        label.lineheight = NULL,
                        label.hjust = NULL, label.vjust = NULL,
-                       label.repel = FALSE) {
+                       label.repel = FALSE, label.show.legend = NA) {
 
   if (!is.data.frame(data)) {
     stop(paste0('Unsupported class: ', class(data)))
@@ -115,7 +116,8 @@ plot_label <- function(p, data, x = NULL, y = NULL, label = TRUE, label.label = 
                           size = label.size, angle = label.angle,
                           family = label.family, fontface = label.fontface,
                           lineheight = label.lineheight,
-                          hjust = label.hjust, vjust = label.vjust)
+                          hjust = label.hjust, vjust = label.vjust,
+                          show.legend = label.show.legend)
   }
   p
 }
@@ -350,8 +352,8 @@ get.layout <- function(nplots, ncol, nrow) {
   }
 
   if (nrow * ncol < nplots) {
-    message <- paste('nrow * ncol (', nrow, '*', ncol,
-                     ')must be larger than number of plots', nplots)
+    message <- paste('nrow * ncol (', nrow, ' * ', ncol,
+                     ') must be larger than number of plots', nplots)
     stop(message)
   }
 
@@ -366,14 +368,9 @@ get.layout <- function(nplots, ncol, nrow) {
 #' @importFrom gridExtra grid.arrange
 setMethod('print', 'ggmultiplot',
   function(x) {
-    nplots <- length(x@plots)
-    if (nplots == 1) {
-      print(x@plots[[1]])
-    } else {
-      layout <- get.layout(nplots, x@ncol, x@nrow)
-      args <- c(x@plots, list(ncol = ncol(layout), nrow = nrow(layout)))
-      do.call(gridExtra::grid.arrange, args)
-    }
+    layout <- get.layout(length(x@plots), x@ncol, x@nrow)
+    args <- c(x@plots, list(ncol = ncol(layout), nrow = nrow(layout)))
+    do.call(gridExtra::grid.arrange, args)
 })
 
 #' Generic show function for \code{ggmultiplot}
@@ -489,6 +486,7 @@ autoplot.ggmultiplot <- function(object, ...) {
 #' @param loadings.label.hjust Horizontal adjustment for loadings text labels
 #' @param loadings.label.vjust Vertical adjustment for loadings text labels
 #' @param loadings.label.repel Logical flag indicating whether to use \code{ggrepel} automatically
+#' @param label.show.legend Logical value indicating whether to show the legend of text labels
 #' @param frame Logical value whether to draw outliner convex / ellipse
 #' @param frame.type Character specifying frame type.
 #' 'convex' or types supporeted by \code{ggplot2::stat_ellipse} can be used.
@@ -528,6 +526,7 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
                      loadings.label.hjust = NULL,
                      loadings.label.vjust = NULL,
                      loadings.label.repel = FALSE,
+                     label.show.legend = NA,
                      frame = FALSE, frame.type = NULL,
                      frame.colour = colour, frame.level = 0.95,
                      frame.alpha = 0.2,
@@ -560,7 +559,8 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
                   label.lineheight = label.lineheight,
                   label.hjust = label.hjust,
                   label.vjust = label.vjust,
-                  label.repel = label.repel)
+                  label.repel = label.repel,
+                  label.show.legend = label.show.legend)
 
   if (loadings.label && !loadings) {
     # If loadings.label is TRUE, draw loadings
@@ -592,7 +592,8 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
                     label.lineheight = loadings.label.lineheight,
                     label.hjust = loadings.label.hjust,
                     label.vjust = loadings.label.vjust,
-                    label.repel = loadings.label.repel)
+                    label.repel = loadings.label.repel,
+                    label.show.legend = label.show.legend)
   }
 
   if (missing(frame) && !is.null(frame.type)) {

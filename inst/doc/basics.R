@@ -40,7 +40,7 @@ head(df)
 ggplot(df, aes(x= cluster, fill = cluster)) + geom_bar()
 
 ## ---- message = FALSE, fig.width = 9, fig.height = 2.5-------------------
-res <- lm(Volume ~ Girth, data = trees)  
+res <- lm(Volume ~ Girth, data = trees) 
 mp <- autoplot(res, ncol = 4)
 mp
 
