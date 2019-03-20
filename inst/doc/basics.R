@@ -39,29 +39,29 @@ head(df)
 
 ggplot(df, aes(x= cluster, fill = cluster)) + geom_bar()
 
-## ---- message = FALSE, fig.width = 9, fig.height = 2.5-------------------
-res <- lm(Volume ~ Girth, data = trees) 
-mp <- autoplot(res, ncol = 4)
-mp
+## ---- message = FALSE, fig.width = 9, fig.height = 2.5, eval=FALSE-------
+#  res <- lm(Volume ~ Girth, data = trees)
+#  mp <- autoplot(res, ncol = 4)
+#  mp
 
-## ---- message = FALSE, fig.width = 9, fig.height = 2.5-------------------
-class(mp)
-mp + theme_bw()
+## ---- message = FALSE, fig.width = 9, fig.height = 2.5, eval=FALSE-------
+#  class(mp)
+#  mp + theme_bw()
 
-## ---- message = FALSE, fig.width = 9, fig.height = 5---------------------
-mp +
-  (ggplot(trees, aes(Girth, Volume)) + geom_point()) +
-  (ggplot(trees, aes(Girth, Height)) + geom_point())
+## ---- message = FALSE, fig.width = 9, fig.height = 5, eval=FALSE---------
+#  mp +
+#    (ggplot(trees, aes(Girth, Volume)) + geom_point()) +
+#    (ggplot(trees, aes(Girth, Height)) + geom_point())
 
-## ---- message = FALSE, fig.width = 9, fig.height = 2.5-------------------
-mp[2:3]
+## ---- message = FALSE, fig.width = 9, fig.height = 2.5, eval=FALSE-------
+#  mp[2:3]
 
-## ---- message = FALSE, fig.width = 2.25, fig.height = 2.5----------------
-mp[[1]]
+## ---- message = FALSE, fig.width = 2.25, fig.height = 2.5, eval=FALSE----
+#  mp[[1]]
 
-## ---- message = FALSE, fig.width = 9, fig.height = 2.5-------------------
-mp[2:3] <- mp[2:3] + theme_bw()
-mp
+## ---- message = FALSE, fig.width = 9, fig.height = 2.5, eval=FALSE-------
+#  mp[2:3] <- mp[2:3] + theme_bw()
+#  mp
 
 ## ---- message = FALSE, fig.width = 9, fig.height = 2.5-------------------
 res <- lapply(c(3, 4, 5), function(x) kmeans(iris[-5], x))
