@@ -1,6 +1,6 @@
-b52e309686b12bc6ad10925e80698e77 *DESCRIPTION
+e96753cd0c1e7d0e21a331db5562cd89 *DESCRIPTION
 6fbec4f861ff4da2a48fa7d7c007eeb6 *NAMESPACE
-5a04d01465c50072f94550750775e6ac *NEWS.md
+7f9d28d4aed2d26c914d346244827805 *NEWS.md
 cc54c17275a6b5341071727d24128ddb *R/base_fortify_list.R
 6432c9a74249145bbfdeb75c784c98e2 *R/base_fortify_ts.R
 b25d8383de95e8c5885cdd035a217437 *R/fortify_MSwM.R
@@ -151,7 +151,7 @@ dd8e0ecfb7d37c0201f39f1bd4172126 *tests/testthat/test-basis.R
 f55974aed1bb305d59d85637077754ce *tests/testthat/test-changepoint.R
 05074535b3166a60a4a2d8cfbddb4cc5 *tests/testthat/test-cluster.R
 36d6ea62c93090a2def3e0c44d1400d4 *tests/testthat/test-forecast.R
-baa908b4cce3f1768f6e96371cb7e6b5 *tests/testthat/test-glmnet.R
+63a7f04d9a05c0a906d68e08002eac7e *tests/testthat/test-glmnet.R
 711bf7e9cd4826e48bd06ec4dd6d31d6 *tests/testthat/test-maps.R
 ac0de1eb9a52b6517061f344ba0dfeb1 *tests/testthat/test-performance.R
 7a11ca314f3fbeb2a519a28837cfda21 *tests/testthat/test-plotlib.R
