@@ -1,3 +1,7 @@
+## ggfortify 0.4.9
+
+* This is a minor release of the package with fixes for CRAN check results.
+
 ## ggfortify 0.4.8
 
 * This is a minor release of the package with fixes to support new major release of `survival` (>=3.1-7).
@@ -63,7 +67,7 @@
 * Support `ggbiplot`.
 * More compatible with recent version of `forecast`, `dplyr`, `tidyr`, etc.
 
-# ggfortify 0.1.0
+## ggfortify 0.1.0
 
 * Compatible with ggplot2 v2.0.0.
 * Support `glmnet`.
@@ -71,6 +75,6 @@
 * Support `ggmultiplot` extraction getter / setter.
 * Support `ggmultiplot` arithmetics.
 
-# ggfortify 0.0.4
+## ggfortify 0.0.4
 
 * First release on CRAN.
