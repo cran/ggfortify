@@ -1,6 +1,6 @@
-187d5c1ee67370c1138dcd56cb4bdb8c *DESCRIPTION
+c527a56714829da7019737a82ed3d57d *DESCRIPTION
 6fbec4f861ff4da2a48fa7d7c007eeb6 *NAMESPACE
-1605fca9112cb1712fc0e66193cc4b18 *NEWS.md
+de03f6e860acc2e97351ffd45d0b4ebe *NEWS.md
 cc54c17275a6b5341071727d24128ddb *R/base_fortify_list.R
 6432c9a74249145bbfdeb75c784c98e2 *R/base_fortify_ts.R
 b25d8383de95e8c5885cdd035a217437 *R/fortify_MSwM.R
@@ -38,9 +38,9 @@ f096d64dbc593f1e9bf6c44c707ed076 *inst/doc/plot_dist.html
 3a8f3702d6c028f99dbef0a1859120e2 *inst/doc/plot_map.R
 1a925f6bf8ba3c8e6cc2f625fcb3ea16 *inst/doc/plot_map.Rmd
 3f03c22029bbb8a4cab4410dbd799cd1 *inst/doc/plot_map.html
-4e9ea2d4615edb6e74906d0a645875b8 *inst/doc/plot_pca.R
-2e96b6d64a3a492a7ca9e5d8aaa4c325 *inst/doc/plot_pca.Rmd
-85b062c0bc09aa2f37cf741886bdf7b0 *inst/doc/plot_pca.html
+2258e91e6620bb15c585d28972460623 *inst/doc/plot_pca.R
+eaf1ad23c7c76abd03eb689667af00a6 *inst/doc/plot_pca.Rmd
+bf534ab43f84a28346959cdb6746bc59 *inst/doc/plot_pca.html
 f5f3f14cc359d8e0104c96f5521399f7 *inst/doc/plot_surv.R
 cf01f055056b6b97792c62f4eb9f187f *inst/doc/plot_surv.Rmd
 a50113c97b63511949b39d8cf6696be7 *inst/doc/plot_surv.html
@@ -160,7 +160,7 @@ f1ef34ae52dffbef1a8ff88d4adfb3d1 *tests/testthat/test-spatial.R
 dbc210db84ef17b0d5704d79f0f1dafb *tests/testthat/test-stats-density.R
 ed2ac2ad00ec1b60c88de010a9af2a12 *tests/testthat/test-stats-lm.R
 d68056b6d97edb3e3759a5f442e01d84 *tests/testthat/test-stats.R
-223c18878776c228bc5133e2a9fba516 *tests/testthat/test-surv.R
+e92062d0d048a1d885013540b4bd392e *tests/testthat/test-surv.R
 d0ff7540a3b81cc61745f58d54d0a85b *tests/testthat/test-ts.R
 ba0004f00ef0887fc7f81050a855f1c1 *tests/testthat/test-tslib.R
 b71aaba6ce6d6d36d4db3442b86f284c *tests/testthat/test-util.R
@@ -170,6 +170,6 @@ d086bff9aa45b68364bc7a425fe6cd1c *tests/testthat/test_lint.R
 e93c59bb2098183144fc143d0e933062 *vignettes/plot_dist.Rmd
 886a9d0e603ad34984dba70e41aa53c3 *vignettes/plot_lm.Rmd
 1a925f6bf8ba3c8e6cc2f625fcb3ea16 *vignettes/plot_map.Rmd
-2e96b6d64a3a492a7ca9e5d8aaa4c325 *vignettes/plot_pca.Rmd
+eaf1ad23c7c76abd03eb689667af00a6 *vignettes/plot_pca.Rmd
 cf01f055056b6b97792c62f4eb9f187f *vignettes/plot_surv.Rmd
 5222d64690f7f2b6bb41ffb81b509a4e *vignettes/plot_ts.Rmd

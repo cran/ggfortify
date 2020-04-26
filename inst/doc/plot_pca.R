@@ -4,28 +4,30 @@ opts_chunk$set(fig.width=6, fig.height=3, fig.path='figures/pca-', warning=FALSE
 
 ## ---- message = FALSE---------------------------------------------------------
 library(ggfortify)
-df <- iris[c(1, 2, 3, 4)]
-autoplot(prcomp(df))
+df <- iris[1:4]
+pca_res <- prcomp(df, scale. = TRUE)
+
+autoplot(pca_res)
 
 ## ---- message = FALSE---------------------------------------------------------
-autoplot(prcomp(df), data = iris, colour = 'Species')
+autoplot(pca_res, data = iris, colour = 'Species')
 
 ## ---- message = FALSE---------------------------------------------------------
-autoplot(prcomp(df), data = iris, colour = 'Species', label = TRUE, label.size = 3)
+autoplot(pca_res, data = iris, colour = 'Species', label = TRUE, label.size = 3)
 
 ## ---- message = FALSE---------------------------------------------------------
-autoplot(prcomp(df), data = iris, colour = 'Species', shape = FALSE, label.size = 3)
+autoplot(pca_res, data = iris, colour = 'Species', shape = FALSE, label.size = 3)
 
 ## ---- message = FALSE---------------------------------------------------------
-autoplot(prcomp(df), data = iris, colour = 'Species', loadings = TRUE)
+autoplot(pca_res, data = iris, colour = 'Species', loadings = TRUE)
 
 ## ---- message = FALSE---------------------------------------------------------
-autoplot(prcomp(df), data = iris, colour = 'Species',
+autoplot(pca_res, data = iris, colour = 'Species',
          loadings = TRUE, loadings.colour = 'blue',
          loadings.label = TRUE, loadings.label.size = 3)
 
 ## ---- message = FALSE---------------------------------------------------------
-autoplot(prcomp(df), scale = 0)
+autoplot(pca_res, scale = 0)
 
 ## ---- message = FALSE---------------------------------------------------------
 d.factanal <- factanal(state.x77, factors = 3, scores = 'regression')
