@@ -1,13 +1,13 @@
-c527a56714829da7019737a82ed3d57d *DESCRIPTION
-6fbec4f861ff4da2a48fa7d7c007eeb6 *NAMESPACE
-de03f6e860acc2e97351ffd45d0b4ebe *NEWS.md
+9ebfd0c00d90932224d366d13f930e8a *DESCRIPTION
+a6eb9b418af1c2feb0433ff45da75441 *NAMESPACE
+3bcbfb595da85f0acadd60fd5087e53c *NEWS.md
 cc54c17275a6b5341071727d24128ddb *R/base_fortify_list.R
 6432c9a74249145bbfdeb75c784c98e2 *R/base_fortify_ts.R
 b25d8383de95e8c5885cdd035a217437 *R/fortify_MSwM.R
 0ded7a5283a94e7a07db19a275f27f69 *R/fortify_base.R
 c2d65242f57d8ff5317c81e132202401 *R/fortify_basis.R
 78fb00c9b51386dd08fc484fa664a867 *R/fortify_changepoint.R
-7a05ee16cd5317c4560e662e34970b6a *R/fortify_cluster.R
+476c4193e0c36503ab1f57ea7ca07cd2 *R/fortify_cluster.R
 09e599bd43f7c0f19d04e4abf39159c9 *R/fortify_forecast.R
 47f2b43df8da7b068ac95312be2dee42 *R/fortify_glmnet.R
 f4cd16ce4095fad7972566faa2bceccb *R/fortify_maps.R
@@ -16,7 +16,7 @@ f4cd16ce4095fad7972566faa2bceccb *R/fortify_maps.R
 8a1e59d97c43c105e14d239598edcedd *R/fortify_spatial.R
 8d0b9253e77923061828a4d40fba6d6c *R/fortify_stats.R
 ac15a7aab60bd9d33e26d3a639f06cc0 *R/fortify_stats_density.R
-0a74724d0c64426390ca468f64a298d9 *R/fortify_stats_lm.R
+cb250bc333ac890c3a616d554e905b4c *R/fortify_stats_lm.R
 e09b3adc633d0d112eac50e62c3b72cc *R/fortify_surv.R
 d5f1cea4936e5beab3ee8a5c03bc8cf2 *R/fortify_vars.R
 aa94a504da3078bc772841f11494c5dd *R/geom.R
@@ -37,10 +37,10 @@ f096d64dbc593f1e9bf6c44c707ed076 *inst/doc/plot_dist.html
 7d8205de1aede3a2b9cf7a863e3aea2a *inst/doc/plot_lm.html
 3a8f3702d6c028f99dbef0a1859120e2 *inst/doc/plot_map.R
 1a925f6bf8ba3c8e6cc2f625fcb3ea16 *inst/doc/plot_map.Rmd
-3f03c22029bbb8a4cab4410dbd799cd1 *inst/doc/plot_map.html
-2258e91e6620bb15c585d28972460623 *inst/doc/plot_pca.R
-eaf1ad23c7c76abd03eb689667af00a6 *inst/doc/plot_pca.Rmd
-bf534ab43f84a28346959cdb6746bc59 *inst/doc/plot_pca.html
+3c84fbd0e21941515fd6d6b55e6d463c *inst/doc/plot_map.html
+44a9eca81c6f5f3e877c293c53bc28de *inst/doc/plot_pca.R
+c935b73a004c3f8cad8656f8ae742a5d *inst/doc/plot_pca.Rmd
+12bb17224cab9d0995011c19ea607a6c *inst/doc/plot_pca.html
 f5f3f14cc359d8e0104c96f5521399f7 *inst/doc/plot_surv.R
 cf01f055056b6b97792c62f4eb9f187f *inst/doc/plot_surv.Rmd
 a50113c97b63511949b39d8cf6696be7 *inst/doc/plot_surv.html
@@ -71,6 +71,7 @@ b1e18d5a71d5bd2651ba3aed9d9acb4c *man/autoplot.kmeans.Rd
 0b43290b6af6dc76b0e51c4565242565 *man/autoplot.matrix.Rd
 5656f87cb300b301010d10b11436527f *man/autoplot.pca_common.Rd
 a8253693008d1b52d5c0a1af2a726515 *man/autoplot.performance.Rd
+3b1d099dfbe2905678490b0602459ca6 *man/autoplot.silhouette.Rd
 d158a81f0233a2575e082783cdf5c01a *man/autoplot.spec.Rd
 ca95a4f9f9b4f3bbddfe270260714a39 *man/autoplot.stepfun.Rd
 00d8eb84960ba467e25626f1d89e7f5c *man/autoplot.survfit.Rd
@@ -103,6 +104,7 @@ d4722d7b85b7f84ebd6af82309e151c5 *man/fortify.cpt.Rd
 578616f286021fb5916a5b8c3ff87c51 *man/fortify.matrix.Rd
 5ed5c6a58f1e9daec02712bfa4cb003e *man/fortify.performance.Rd
 65fc8debb8ad9da526154a174123231c *man/fortify.prcomp.Rd
+56169970554c038155309dcbedf99898 *man/fortify.silhouette.Rd
 80c3220e3faa7baa76d53102788be593 *man/fortify.spec.Rd
 65cf0afd2c8b2af126d860009e810b56 *man/fortify.stepfun.Rd
 1451b9150004e587cac0ab81ba7bdaf6 *man/fortify.survfit.Rd
@@ -149,7 +151,7 @@ f6f2461ae4c56fa5a9603cbca1bcbf5d *tests/testthat/test-base-infer.R
 53010c6157dcc02f7785996dc186cb90 *tests/testthat/test-base_ts.R
 dd8e0ecfb7d37c0201f39f1bd4172126 *tests/testthat/test-basis.R
 f55974aed1bb305d59d85637077754ce *tests/testthat/test-changepoint.R
-05074535b3166a60a4a2d8cfbddb4cc5 *tests/testthat/test-cluster.R
+18fe111633c63e79db26127dd6aa6d98 *tests/testthat/test-cluster.R
 36d6ea62c93090a2def3e0c44d1400d4 *tests/testthat/test-forecast.R
 63a7f04d9a05c0a906d68e08002eac7e *tests/testthat/test-glmnet.R
 711bf7e9cd4826e48bd06ec4dd6d31d6 *tests/testthat/test-maps.R
@@ -158,7 +160,7 @@ ac0de1eb9a52b6517061f344ba0dfeb1 *tests/testthat/test-performance.R
 0fcdbd58f752f58065c9f36532e61c9b *tests/testthat/test-raster.R
 f1ef34ae52dffbef1a8ff88d4adfb3d1 *tests/testthat/test-spatial.R
 dbc210db84ef17b0d5704d79f0f1dafb *tests/testthat/test-stats-density.R
-ed2ac2ad00ec1b60c88de010a9af2a12 *tests/testthat/test-stats-lm.R
+55ef146d6c9639e11e23646bc1b04b47 *tests/testthat/test-stats-lm.R
 d68056b6d97edb3e3759a5f442e01d84 *tests/testthat/test-stats.R
 e92062d0d048a1d885013540b4bd392e *tests/testthat/test-surv.R
 d0ff7540a3b81cc61745f58d54d0a85b *tests/testthat/test-ts.R
@@ -170,6 +172,6 @@ d086bff9aa45b68364bc7a425fe6cd1c *tests/testthat/test_lint.R
 e93c59bb2098183144fc143d0e933062 *vignettes/plot_dist.Rmd
 886a9d0e603ad34984dba70e41aa53c3 *vignettes/plot_lm.Rmd
 1a925f6bf8ba3c8e6cc2f625fcb3ea16 *vignettes/plot_map.Rmd
-eaf1ad23c7c76abd03eb689667af00a6 *vignettes/plot_pca.Rmd
+c935b73a004c3f8cad8656f8ae742a5d *vignettes/plot_pca.Rmd
 cf01f055056b6b97792c62f4eb9f187f *vignettes/plot_surv.Rmd
 5222d64690f7f2b6bb41ffb81b509a4e *vignettes/plot_ts.Rmd
