@@ -306,11 +306,11 @@ fortify.aareg <- function(model, data = NULL,
     }
     d <- tidyr::gather_(d, 'variable', 'coef', cols)
     d <- d %>%
-      dplyr::group_by_('variable') %>%
-      dplyr::mutate_('se' = 'sqrt(cumsum(coef ^ 2))',
-                     'value' = 'cumsum(coef)',
-                     'upper' = 'value + se * 1.96',
-                     'lower' = 'value - se * 1.96')
+      dplyr::group_by(variable) %>%
+      dplyr::mutate(se = sqrt(cumsum(coef ^ 2)),
+                     value = cumsum(coef),
+                     upper = value + se * 1.96,
+                     lower = value - se * 1.96)
   } else {
     d <- cbind_wraps(data.frame(time = model$time[keep]),
                      apply(coefs, 2, cumsum))
@@ -343,5 +343,5 @@ autoplot.aareg <- function (object, maxtime = NULL,
   plot.data <- fortify(object, maxtime = maxtime,
                        surv.connect = surv.connect, melt = TRUE)
   autoplot.survfit(plot.data, facets = facets, ncol = ncol,
-                   xlab = '', ylab = '', ...)
+                   xlab = xlab, ylab = ylab, ...)
 }

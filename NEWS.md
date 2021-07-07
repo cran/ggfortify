@@ -1,3 +1,9 @@
+## ggfortify 0.4.12
+
+* Used `QuickStartExample` to access `x` and `y` explicitly to fix CRAN error.
+* Fixed the warning related to the non-uniform sampler used in tests.
+* Added various missing visible bindings for global variables.
+
 ## ggfortify 0.4.11
 
 * Added support of Silhouette plot for `cluster::silhouette` objects, thanks to @damirpolat.
