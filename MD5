@@ -1,6 +1,6 @@
-3b5d4f9fc485bb9518562efb46eb7d2c *DESCRIPTION
+d26aee2cdeab281e1c5fe06f82b7a9c3 *DESCRIPTION
 3dd04a99281fd02c2d7e38321c493c39 *NAMESPACE
-474d19e68e03eb653f7364163c260f0d *NEWS.md
+0ac5df01cabcec90d1c26e434897adac *NEWS.md
 53d83df7018a93eeb1ba4215be0eeaba *R/aaa.R
 cc54c17275a6b5341071727d24128ddb *R/base_fortify_list.R
 cc0df4e1ca48cff0cd383d6ac6bb2ba8 *R/base_fortify_ts.R
@@ -18,14 +18,14 @@ a31362a8290460a017037cea81dec607 *R/fortify_spatial.R
 302541be685d931bf8179b8024e2ce42 *R/fortify_stats.R
 02c7f910390b88ff4678af2d746e07d4 *R/fortify_stats_density.R
 ceb946cac2c5a3984eb7a7c07e47fb76 *R/fortify_stats_lm.R
-206fced36ed7665db54d5ddd7d9ccddc *R/fortify_surv.R
+7bb14014ea7e9434c2b3b875acf112a9 *R/fortify_surv.R
 2f0341997a61995636db0263290147ba *R/fortify_vars.R
 aa94a504da3078bc772841f11494c5dd *R/geom.R
 9ad5466326dc2841602859a6d185b9ef *R/ggfortify.R
-020f861ebe8794361bb528a5d7d8d6f8 *R/plotlib.R
+563c437548429d42db4da84cadd1bf44 *R/plotlib.R
 f78bbab1a3f39315351787e67fc5e239 *R/tslib.R
 9a9ef146db93538f8d71931bc9bc1bc6 *R/util.R
-7dca74ccbc8b87a4c9bebf8d30e4d415 *build/vignette.rds
+696b13cf4878ec09ecfc1e7a5b552420 *build/vignette.rds
 26d50f06b9cd98f7191d93bf49642939 *inst/CITATION
 ac8f5efddf26190b2669b4f2424039e0 *inst/doc/basics.R
 995248f97a3691d83a74dbf74747ab87 *inst/doc/basics.Rmd
@@ -41,7 +41,7 @@ e93c59bb2098183144fc143d0e933062 *inst/doc/plot_dist.Rmd
 d87302ea731f0135dc8489c982d56094 *inst/doc/plot_map.html
 44a9eca81c6f5f3e877c293c53bc28de *inst/doc/plot_pca.R
 c935b73a004c3f8cad8656f8ae742a5d *inst/doc/plot_pca.Rmd
-ac24b6d382e22e05102b3a95d6387be0 *inst/doc/plot_pca.html
+07a8c429bbf5f5ffcef76f531205f67a *inst/doc/plot_pca.html
 f5f3f14cc359d8e0104c96f5521399f7 *inst/doc/plot_surv.R
 cf01f055056b6b97792c62f4eb9f187f *inst/doc/plot_surv.Rmd
 89d54a9a695cca6e692bcc8f211f3741 *inst/doc/plot_surv.html
@@ -162,7 +162,7 @@ f1ef34ae52dffbef1a8ff88d4adfb3d1 *tests/testthat/test-spatial.R
 dbc210db84ef17b0d5704d79f0f1dafb *tests/testthat/test-stats-density.R
 55ef146d6c9639e11e23646bc1b04b47 *tests/testthat/test-stats-lm.R
 d68056b6d97edb3e3759a5f442e01d84 *tests/testthat/test-stats.R
-e92062d0d048a1d885013540b4bd392e *tests/testthat/test-surv.R
+6f491b1127a2ce872c9e192f5596d833 *tests/testthat/test-surv.R
 d0ff7540a3b81cc61745f58d54d0a85b *tests/testthat/test-ts.R
 ba0004f00ef0887fc7f81050a855f1c1 *tests/testthat/test-tslib.R
 8c4a0d5483da28bee40a4b892e4cfca4 *tests/testthat/test-util.R
