@@ -1,6 +1,7 @@
-d26aee2cdeab281e1c5fe06f82b7a9c3 *DESCRIPTION
+d60752faa6668ff1aace22e32cc8da35 *DESCRIPTION
+e7fe0a693f03b38acf2533199237478b *LICENSE
 3dd04a99281fd02c2d7e38321c493c39 *NAMESPACE
-0ac5df01cabcec90d1c26e434897adac *NEWS.md
+28679fec4cc2496f014343eeef692468 *NEWS.md
 53d83df7018a93eeb1ba4215be0eeaba *R/aaa.R
 cc54c17275a6b5341071727d24128ddb *R/base_fortify_list.R
 cc0df4e1ca48cff0cd383d6ac6bb2ba8 *R/base_fortify_ts.R
@@ -17,7 +18,7 @@ f4cd16ce4095fad7972566faa2bceccb *R/fortify_maps.R
 a31362a8290460a017037cea81dec607 *R/fortify_spatial.R
 302541be685d931bf8179b8024e2ce42 *R/fortify_stats.R
 02c7f910390b88ff4678af2d746e07d4 *R/fortify_stats_density.R
-ceb946cac2c5a3984eb7a7c07e47fb76 *R/fortify_stats_lm.R
+f7ec11483516742d0e69c0fab081a003 *R/fortify_stats_lm.R
 7bb14014ea7e9434c2b3b875acf112a9 *R/fortify_surv.R
 2f0341997a61995636db0263290147ba *R/fortify_vars.R
 aa94a504da3078bc772841f11494c5dd *R/geom.R
