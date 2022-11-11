@@ -205,72 +205,52 @@ hr {
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Plotting Diagnostics for LM and GLM}
 -->
-
-<p>This document explains plotting diagnostics for LM and GLM using <code>{ggplot2}</code> and <code>{ggfortify}</code>. </p>
-
+<p>This document explains plotting diagnostics for LM and GLM using <code>{ggplot2}</code> and <code>{ggfortify}</code>.</p>
 <h1>Plotting Diagnostics for Linear Models</h1>
-
-<p><code>{ggfortify}</code> let <code>{ggplot2}</code> know how to interpret <code>lm</code> objects. After loading <code>{ggfortify}</code>, you can use <code>ggplot2::autoplot</code> function for <code>lm</code> objects. </p>
-
-<pre><code class="r">library(ggfortify)
+<p><code>{ggfortify}</code> let <code>{ggplot2}</code> know how to interpret <code>lm</code> objects. After loading <code>{ggfortify}</code>, you can use <code>ggplot2::autoplot</code> function for <code>lm</code> objects.</p>
+<pre><code class="language-r">library(ggfortify)
 autoplot(lm(Petal.Width ~ Petal.Length, data = iris), label.size = 3)
 </code></pre>
-
-<p>You can select desired plot by <code>which</code> option as the same manner as standard <code>plot</code>. Also, 
+<p>You can select desired plot by <code>which</code> option as the same manner as standard <code>plot</code>. Also,
 <code>ncol</code> and <code>nrow</code> allows you to specify the number of subplot columns and rows.</p>
-
-<pre><code class="r">par(mfrow = c(1, 2))
+<pre><code class="language-r">par(mfrow = c(1, 2))
 m &lt;- lm(Petal.Width ~ Petal.Length, data = iris)
 
 autoplot(m, which = 1:6, ncol = 3, label.size = 3)
 </code></pre>
-
 <h1>Plotting Diagnostics for Generalized Linear Models</h1>
-
 <p>It also suppotgs <code>glm</code> instance.</p>
-
-<pre><code class="r">m &lt;- glm(Murder ~ Assault + UrbanPop + Rape,
+<pre><code class="language-r">m &lt;- glm(Murder ~ Assault + UrbanPop + Rape,
          family = gaussian, data = USArrests)
 
 autoplot(m, which = 1:6, label.size = 3)
 </code></pre>
-
 <h1>Decorating Plots</h1>
-
 <p>Because <code>{ggplot2}</code> itself cannot handle different kinds of plots in a single instance, <code>{ggfortify}</code> handle them using its original class named <code>ggmultiplot</code>. You can use <code>+</code> operator to decorate <code>ggmultiplot</code>.</p>
-
-<pre><code class="r">class(autoplot(m))
+<pre><code class="language-r">class(autoplot(m))
 autoplot(m, label.size = 3) + theme_bw()
 </code></pre>
-
 <h1>Specifing Plotting Options</h1>
-
 <p>Some properties can be changed by passing corresponding keywords. For example, <code>colour</code> keyword is for data points, <code>smooth.colour</code> is for smoothing lines and <code>ad.colour</code> is for additional auxiliary lies. Also, <code>ncol</code> and <code>nrow</code> control facet layout. Use <code>help(autoplot.lm)</code> (or <code>help(autoplot.*)</code> for any other objects) to check available options.</p>
-
-<pre><code class="r">autoplot(m, which = 1:6, colour = &#39;dodgerblue3&#39;,
-         smooth.colour = &#39;black&#39;, smooth.linetype = &#39;dashed&#39;,
-         ad.colour = &#39;blue&#39;,
-         label.size = 3, label.n = 5, label.colour = &#39;blue&#39;,
+<pre><code class="language-r">autoplot(m, which = 1:6, colour = 'dodgerblue3',
+         smooth.colour = 'black', smooth.linetype = 'dashed',
+         ad.colour = 'blue',
+         label.size = 3, label.n = 5, label.colour = 'blue',
          ncol = 3)
 </code></pre>
-
-<p>Also, you can use column names for these properties. Note that <code>lm</code> and <code>glm</code> instances doesn&#39;t retain original data, you should pass original data via <code>data</code> keyword to use column names not included in the model.</p>
-
-<pre><code class="r">autoplot(lm(Petal.Width ~ Petal.Length, data = iris), data = iris,
-         colour = &#39;Species&#39;, label.size = 3)
+<p>Also, you can use column names for these properties. Note that <code>lm</code> and <code>glm</code> instances doesn’t retain original data, you should pass original data via <code>data</code> keyword to use column names not included in the model.</p>
+<pre><code class="language-r">autoplot(lm(Petal.Width ~ Petal.Length, data = iris), data = iris,
+         colour = 'Species', label.size = 3)
 </code></pre>
-
 <h1>Plotting <code>{glmnet}</code></h1>
-
 <p><code>{ggfortify}</code> supports <code>{glmnet}</code> package which supports Regularized Generalized Linear Models (Ridge, Lasso and Elastic-net).</p>
-
-<pre><code class="r">library(glmnet)
+<pre><code class="language-r">library(glmnet)
 data(QuickStartExample)
 fit &lt;- glmnet::glmnet(x, y)
 autoplot(fit)
 
 fit &lt;- glmnet::cv.glmnet(x, y)
-autoplot(fit, colour = &#39;blue&#39;)
+autoplot(fit, colour = 'blue')
 </code></pre>
 
 </body>

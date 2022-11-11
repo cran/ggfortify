@@ -7,11 +7,14 @@
 #' @return data.frame
 #' @aliases fortify.survfit.cox
 #' @examples
-#' library(survival)
-#' fortify(survfit(Surv(time, status) ~ sex, data = lung))
-#' fortify(survfit(Surv(time, status) ~ 1, data = lung))
-#' fortify(survfit(coxph(Surv(time, status) ~ sex, data = lung)))
-#' fortify(survfit(coxph(Surv(time, status) ~ 1, data = lung)))
+#' \dontrun{
+#' if (requireNamespace("survival", quietly = TRUE)) {
+#'   fortify(survfit(Surv(time, status) ~ sex, data = lung))
+#'   fortify(survfit(Surv(time, status) ~ 1, data = lung))
+#'   fortify(survfit(coxph(Surv(time, status) ~ sex, data = lung)))
+#'   fortify(survfit(coxph(Surv(time, status) ~ 1, data = lung)))
+#' }
+#' }
 #' @export
 fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
                             fun = NULL, ...) {
@@ -142,12 +145,15 @@ fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
 #' @return ggplot
 #' @aliases autoplot.survfit.cox
 #' @examples
-#' library(survival)
-#' autoplot(survfit(Surv(time, status) ~ sex, data = lung))
-#' autoplot(survfit(Surv(time, status) ~ sex, data = lung), facets = TRUE)
-#' autoplot(survfit(Surv(time, status) ~ 1, data = lung))
-#' autoplot(survfit(Surv(time, status) ~ sex, data=lung), conf.int = FALSE, censor = FALSE)
-#' autoplot(survfit(coxph(Surv(time, status) ~ sex, data = lung)))
+#' \dontrun{
+#' if (requireNamespace("survival", quietly = TRUE)) {
+#'   autoplot(survfit(Surv(time, status) ~ sex, data = lung))
+#'   autoplot(survfit(Surv(time, status) ~ sex, data = lung), facets = TRUE)
+#'   autoplot(survfit(Surv(time, status) ~ 1, data = lung))
+#'   autoplot(survfit(Surv(time, status) ~ sex, data=lung), conf.int = FALSE, censor = FALSE)
+#'   autoplot(survfit(coxph(Surv(time, status) ~ sex, data = lung)))
+#' }
+#' }
 #' @importFrom scales percent
 #' @export
 autoplot.survfit <- function(object, fun = NULL,
@@ -275,9 +281,12 @@ autoplot.survfit <- function(object, fun = NULL,
 #' @param melt Logical flag indicating whether to melt each timeseries as variable
 #' @return data.frame
 #' @examples
-#' library(survival)
-#' fortify(aareg(Surv(time, status) ~ age + sex + ph.ecog, data = lung, nmin = 1))
-#' fortify(aareg(Surv(time, status) ~ age + sex + ph.ecog, data = lung, nmin = 1), melt = TRUE)
+#' \dontrun{
+#' if (requireNamespace("survival", quietly = TRUE)) {
+#'   fortify(aareg(Surv(time, status) ~ age + sex + ph.ecog, data = lung, nmin = 1))
+#'   fortify(aareg(Surv(time, status) ~ age + sex + ph.ecog, data = lung, nmin = 1), melt = TRUE)  
+#' }
+#' }
 #' @export
 fortify.aareg <- function(model, data = NULL,
                           maxtime = NULL,
@@ -304,7 +313,7 @@ fortify.aareg <- function(model, data = NULL,
     if (surv.connect) {
       d <- rbind(0, d)
     }
-    d <- tidyr::gather_(d, 'variable', 'coef', cols)
+    d <- tidyr::gather(d, 'variable', 'coef', cols)
     d <- d %>%
       dplyr::group_by(variable) %>%
       dplyr::mutate(se = sqrt(cumsum(coef ^ 2)),
@@ -331,8 +340,11 @@ fortify.aareg <- function(model, data = NULL,
 #' @param ... other arguments passed to \code{autoplot.survfit}
 #' @return ggplot
 #' @examples
-#' library(survival)
-#' autoplot(aareg(Surv(time, status) ~ age + sex + ph.ecog, data = lung, nmin = 1))
+#' \dontrun{
+#' if (requireNamespace("survival", quietly = TRUE)) {
+#'   autoplot(aareg(Surv(time, status) ~ age + sex + ph.ecog, data = lung, nmin = 1))
+#' }
+#' }
 #' @export
 autoplot.aareg <- function (object, maxtime = NULL,
                             surv.connect = TRUE,

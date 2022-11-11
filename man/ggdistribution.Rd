@@ -12,6 +12,13 @@ ggdistribution(
   linetype = NULL,
   fill = NULL,
   alpha = NULL,
+  xlim = c(NA, NA),
+  ylim = c(NA, NA),
+  log = "",
+  main = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  asp = NULL,
   ...
 )
 }
@@ -29,6 +36,20 @@ ggdistribution(
 \item{fill}{Fill colour}
 
 \item{alpha}{Alpha}
+
+\item{xlim}{X axis limit}
+
+\item{ylim}{Y axis limit}
+
+\item{log}{log}
+
+\item{main}{main}
+
+\item{xlab}{xlab}
+
+\item{ylab}{ylab}
+
+\item{asp}{asp}
 
 \item{...}{Keywords passed to PDC/CDF func}
 }

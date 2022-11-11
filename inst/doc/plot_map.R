@@ -2,7 +2,7 @@
 library(knitr)
 opts_chunk$set(fig.width=3, fig.height=3, fig.path='figures/map-', warning=FALSE)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval=require("mapdata", quietly = TRUE)----------------
 library(mapdata)
 library(ggplot2)
 
@@ -12,7 +12,7 @@ head(jp)
 ggplot(jp, aes(x = long, y = lat, group = group)) +
   geom_polygon()
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval=require("mapdata", quietly = TRUE)----------------
 library(ggfortify)
 jp <-  map('world2', 'japan', plot = FALSE, fill = TRUE)
 class(jp)
@@ -22,7 +22,7 @@ p <- autoplot(jp, geom = 'polygon', fill = 'subregion') +
   theme(legend.position="none")
 p
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval=require("mapdata", quietly = TRUE)----------------
 cities <- get('world.cities')
 cities <- cities[cities$country.etc == 'Japan', ]
 head(cities)
@@ -30,10 +30,10 @@ head(cities)
 p + geom_point(data = cities, aes(x = long, y = lat),
                colour = 'blue', size = 0.1)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval=require("mapdata", quietly = TRUE)----------------
 p + geom_point(data = cities, colour = 'blue', size = 0.1)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval=require("sp", quietly = TRUE)---------------------
 library(sp)
 df <- data.frame(long = c(139.691704, 135.519711),
                  lat = c(35.689521, 34.686316),
@@ -43,11 +43,11 @@ coordinates(df) <- ~ long + lat
 class(df)
 autoplot(df, p = p, colour = 'red', size = 10)
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- message = FALSE, eval=require("sp", quietly = TRUE)---------------------
 autoplot(df, p = p, colour = 'red', size = 'population') +
   scale_size_area()
 
-## ---- message = FALSE, eval = FALSE-------------------------------------------
+## ---- message = FALSE, eval = FALSE, eval=FALSE-------------------------------
 #  library(ggmap)
 #  bbox <- c(130.0, 30.0, 145.0, 45.0)
 #  map <- get_openstreetmap(bbox = bbox, scale = 47500000)

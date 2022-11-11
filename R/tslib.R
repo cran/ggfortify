@@ -6,10 +6,12 @@
 #' If not provided, regard the input as date when the frequency is 4 or 12.
 #' @return vector
 #' @examples
+#' \dontrun{
 #' ggfortify:::get.dtindex(AirPassengers)
 #' ggfortify:::get.dtindex(UKgas)
 #' ggfortify:::get.dtindex(Nile, is.date = FALSE)
 #' ggfortify:::get.dtindex(Nile, is.date = TRUE)
+#' }
 get.dtindex <- function(data, is.tsp = FALSE, is.date = NULL) {
   if (is.tsp) {
     tsp <- data
@@ -36,8 +38,10 @@ get.dtindex <- function(data, is.tsp = FALSE, is.date = NULL) {
 #' If not provided, regard the input as date when the frequency is 4 or 12.
 #' @return vector
 #' @examples
+#' \dontrun{
 #' ggfortify:::get.dtindex.continuous(AirPassengers, length = 10)
 #' ggfortify:::get.dtindex.continuous(UKgas, length = 10)
+#' }
 get.dtindex.continuous <- function(data, length, is.tsp = FALSE, is.date = NULL) {
   if (is.tsp) {
     tsp <- data
@@ -62,7 +66,9 @@ get.dtindex.continuous <- function(data, length, is.tsp = FALSE, is.date = NULL)
 #' @param raise Logical flag whether raise an error
 #' @return logical
 #' @examples
+#' \dontrun{
 #' ggfortify:::is.univariate(AirPassengers)
+#' }
 is.univariate <- function(data, raise = TRUE) {
   if (ncol(as.matrix(data)) > 1) {
     if (raise) {
@@ -83,8 +89,10 @@ is.univariate <- function(data, raise = TRUE) {
 #' @param data.name Specify column name for univariate time series data. Ignored in multivariate time series.
 #' @return data.frame
 #' @examples
+#' \dontrun{
 #' predicted <- predict(stats::HoltWinters(UKgas), n.ahead = 5, prediction.interval = TRUE)
 #' rbind_ts(predicted, UKgas, ts.connect = TRUE)
+#' }
 #' @export
 rbind_ts <- function(data, original, ts.connect = TRUE,
                      index.name = 'Index', data.name = 'Data') {
@@ -120,9 +128,11 @@ rbind_ts <- function(data, original, ts.connect = TRUE,
 #' @param ci.type "white" or "ma"
 #' @return vector
 #' @examples
+#' \dontrun{
 #' air.acf <- acf(AirPassengers, plot = FALSE)
 #' ggfortify:::confint.acf(air.acf)
 #' ggfortify:::confint.acf(air.acf, ci.type = 'ma')
+#' }
 confint.acf <- function (x, ci = 0.95, ci.type = "white") {
   if ( (nser <- ncol(x$lag)) < 1L)
     stop("x$lag must have at least 1 column")
@@ -177,8 +187,11 @@ confint.acf <- function (x, ci = 0.95, ci.type = "white") {
 #' @param ... other keywords
 #' @return ts An time series of the one-step forecasts
 #' @examples
+#' \dontrun{
 #' fitted(ar(WWWusage))
-#' @export
+#' }
+#' @exportS3Method fitted ar
+#' @method fitted ar
 fitted.ar <- function(object, ...) {
   x <- forecast::getResponse(object)
   return(x - stats::residuals(object))
@@ -190,7 +203,9 @@ fitted.ar <- function(object, ...) {
 #' @param ... other keywords
 #' @return ts Residuals extracted from the object object.
 #' @examples
+#' \dontrun{
 #' residuals(ar(WWWusage))
+#' }
 #' @export
 residuals.ar <- function(object, ...) {
   return(object$resid)
@@ -205,7 +220,9 @@ residuals.ar <- function(object, ...) {
 #' @inheritParams plot_confint
 #' @return ggplot
 #' @examples
+#' \dontrun{
 #' ggcpgram(AirPassengers)
+#' }
 #' @export
 ggcpgram <- function (ts, taper = 0.1,
                       colour = '#000000', linetype = 'solid',
@@ -260,7 +277,9 @@ ggcpgram <- function (ts, taper = 0.1,
 #' @param ... other keywords
 #' @return ggplot
 #' @examples
+#' \dontrun{
 #' ggtsdiag(arima(AirPassengers))
+#' }
 #' @export
 ggtsdiag <- function(object, gof.lag = 10,
                      conf.int = TRUE,
@@ -324,9 +343,11 @@ ggtsdiag <- function(object, gof.lag = 10,
 #' @param ... Keywords passed to autoplot.ts
 #' @return ggplot
 #' @examples
+#' \dontrun{
 #' ggfreqplot(AirPassengers)
 #' ggfreqplot(AirPassengers, freq = 4)
 #' ggfreqplot(AirPassengers, conf.int = TRUE)
+#' }
 #' @export
 ggfreqplot <- function(data, freq = NULL,
                        nrow = NULL, ncol = NULL,
