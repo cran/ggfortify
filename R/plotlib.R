@@ -395,9 +395,10 @@ setMethod('show', 'ggmultiplot', function(object) { print(object) })
 #' @method grid.draw ggmultiplot
 #' @importFrom grid grid.draw
 #' @importFrom gridExtra arrangeGrob
-#' @param plot \code{ggmultiplot}
-grid.draw.ggmultiplot <- function(plot) {
-  grid::grid.draw(gridExtra::arrangeGrob(grobs = plot@plots))
+#' @param x \code{ggmultiplot}
+#' @param recording \code{ggmultiplot}
+grid.draw.ggmultiplot <- function(x, recording = TRUE) {
+  grid::grid.draw(gridExtra::arrangeGrob(grobs = x@plots), recording = recording)
 }
 
 #' Post process for fortify. Based on \code{ggplot2::qplot}
@@ -546,6 +547,30 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
                      main = NULL, xlab = NULL, ylab = NULL, asp = NULL,
                      ...) {
 #  print(label.position)
+
+  arguments <- list(...)
+
+  if ("color" %in% names(arguments)) {
+    if (missing(colour)) {
+      colour <- arguments[["color"]]
+    } else {
+      warning("both 'colour=' and 'color=' found, ignoring 'color='")
+    }
+  }
+  if ("loadings.color" %in% names(arguments)) {
+    if (missing(loadings.colour)) {
+      loadings.colour <- arguments[["loadings.color"]]
+    } else {
+      warning("both 'loadings.colour=' and 'loadings.color=' found, ignoring 'loadings.color='")
+    }
+  }
+  if ("loadings.label.color" %in% names(arguments)) {
+    if (missing(loadings.label.colour)) {
+      loadings.label.colour <- arguments[["loadings.label.color"]]
+    } else {
+      warning("both 'loadings.label.colour=' and 'loadings.label.color=' found, ignoring 'loadings.label.color='")
+    }
+  }
 
   plot.columns <- colnames(plot.data)
   mapping <- ggplot2::aes_string(x = plot.columns[1L], y = plot.columns[2L])
