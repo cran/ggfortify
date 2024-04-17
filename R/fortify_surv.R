@@ -18,6 +18,10 @@
 #' @export
 fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
                             fun = NULL, ...) {
+  # survival package >= v3.6.1
+  if (length(dim(model$n.censor)) == 2) {
+    model$n.censor <- rowSums(model$n.censor)
+  }
   d <- data.frame(time = model$time,
                   n.risk = model$n.risk,
                   n.event = model$n.event,
@@ -35,7 +39,7 @@ fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
       varying.names <- c('n.risk', 'n.event', 'pstate', 'std.err', 'upper', 'lower')
       varying.i <- lapply(varying.names, function(x) which(startsWith(colnames(d), x)))
       d <- reshape(d, varying = varying.i, v.names = varying.names, timevar = NULL, direction = 'long')
-      d <- subset(d, select = -c(id))
+      d <- suppressWarnings(subset(d, select = -c(id)))
       rownames(d) <- NULL
 
       if (length(model$states) > 1) {
