@@ -1,7 +1,7 @@
-92dc6882afbb09ac9a4611b20914dd58 *DESCRIPTION
+5dbcf819445a51c177e39c5b331e8119 *DESCRIPTION
 e7fe0a693f03b38acf2533199237478b *LICENSE
 0ab2be524a326a5ae476b2817ff5faee *NAMESPACE
-df7fe11bc3f743b34cf17184f028c15c *NEWS.md
+6a4e1552be475e9291f0077dcea0a041 *NEWS.md
 53d83df7018a93eeb1ba4215be0eeaba *R/aaa.R
 b4d6cfab6400e8c4ec8898ff8dd2f34e *R/base_fortify_list.R
 962b15a34b7a41fdfe2391a68312e739 *R/base_fortify_ts.R
@@ -16,7 +16,7 @@ f4cd16ce4095fad7972566faa2bceccb *R/fortify_maps.R
 7418e6393aaa6bd405d437bbd724a9eb *R/fortify_performance.R
 2a8f14cb922d79cdbc8103d1285227bc *R/fortify_raster.R
 a31362a8290460a017037cea81dec607 *R/fortify_spatial.R
-54e0205bdcd7574332be0179ba35eb74 *R/fortify_stats.R
+092d24ff05d7cf3d807c65c682113482 *R/fortify_stats.R
 c38a164cf6685e0eea8c974e425bcd25 *R/fortify_stats_density.R
 8f80eed1896a81d0b2550952c8f3854d *R/fortify_stats_lm.R
 ad95f54e4590cb3663bfe51ddb38431a *R/fortify_surv.R
@@ -25,7 +25,7 @@ aa94a504da3078bc772841f11494c5dd *R/geom.R
 b2c1c124576096115436fa297931629e *R/ggfortify.R
 933a82e0c9caf272c2ce5837fbdb6def *R/plotlib.R
 76fd69b506669e15ec5f963b6e2842fe *R/tslib.R
-9a9ef146db93538f8d71931bc9bc1bc6 *R/util.R
+871970e9740b557b8415ecb2cf7894a7 *R/util.R
 749bc9d3ad517df7262991a8c4de4d28 *inst/CITATION
 418566ebe0e2ece834141226e47f44e3 *man/apply_facets.Rd
 84be3b9fe18063095ea1dfca90a3df90 *man/apply_grid.Rd
@@ -140,9 +140,9 @@ ac0de1eb9a52b6517061f344ba0dfeb1 *tests/testthat/test-performance.R
 4534a53fffca4fe454f416e42fa57200 *tests/testthat/test-spatial.R
 dbc210db84ef17b0d5704d79f0f1dafb *tests/testthat/test-stats-density.R
 e42314b87ae068ebff01a17798c72f76 *tests/testthat/test-stats-lm.R
-14455c44d99366046bcfe1ea5499a33b *tests/testthat/test-stats.R
+9839586b68446d0d87fd5f500f6e2003 *tests/testthat/test-stats.R
 5b332b6768c7096ca58d6d2a32f12875 *tests/testthat/test-surv.R
-d0ff7540a3b81cc61745f58d54d0a85b *tests/testthat/test-ts.R
+0d7d58a30007a3e4514d22b4cc819437 *tests/testthat/test-ts.R
 4ecc049bb2ac08cae9efbb276b7ed945 *tests/testthat/test-tslib.R
-8c4a0d5483da28bee40a4b892e4cfca4 *tests/testthat/test-util.R
+b7811f5fddaf0aaa065e40281f8c2292 *tests/testthat/test-util.R
 4c551dc2f58173dd32017b4eeee9afaa *tests/testthat/test-vars.R
