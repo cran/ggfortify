@@ -225,7 +225,7 @@ geom_factory <- function(geomfunc, data = NULL, position = NULL, ...) {
   if (!is.null(position)) {
     option[['position']] <- position
   }
-  option[['mapping']] <- do.call(ggplot2::aes_string, mapping)
+  option[['mapping']] <- do.call(ggplot2::aes, lapply(mapping, as.name))
   return(do.call(geomfunc, option))
 }
 
@@ -483,6 +483,9 @@ autoplot.ggmultiplot <- function(object, ...) {
 #' @param label Logical value whether to display data labels
 #' @inheritParams plot_label
 #' @param loadings Logical value whether to display loadings arrows
+#' @param loadings.cutoff Minimum Euclidean length of the unscaled loading
+#'   vectors in the selected two-dimensional component space. Disabled when
+#'   \code{NULL}.
 #' @param loadings.arrow An arrow definition
 #' @param loadings.colour Point colour for data
 #' @param loadings.linewidth Segment linewidth for loadings
@@ -526,6 +529,7 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
                      label.repel = FALSE,
                      label.position = "identity",
                      loadings = FALSE,
+                     loadings.cutoff = NULL,
                      loadings.arrow = grid::arrow(length = grid::unit(8, 'points')),
                      loadings.colour = '#FF0000',
                      loadings.linewidth = 0.5,
@@ -549,6 +553,12 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
                      main = NULL, xlab = NULL, ylab = NULL, asp = NULL,
                      ...) {
 #  print(label.position)
+
+  if (!is.null(loadings.cutoff) &&
+      (!is.numeric(loadings.cutoff) || length(loadings.cutoff) != 1L ||
+       !is.finite(loadings.cutoff) || loadings.cutoff < 0)) {
+    stop("'loadings.cutoff' must be NULL or a single finite, non-negative number")
+  }
 
   arguments <- list(...)
 
@@ -575,7 +585,7 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
   }
 
   plot.columns <- colnames(plot.data)
-  mapping <- ggplot2::aes_string(x = plot.columns[1L], y = plot.columns[2L])
+  mapping <- ggplot2::aes(x = .data[[plot.columns[1L]]], y = .data[[plot.columns[2L]]])
 
   if (is.logical(shape) && !shape && missing(label)) {
     # if shape=FALSE, turn label to TRUE
@@ -607,15 +617,24 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
     # If loadings.label is TRUE, draw loadings
     loadings <- TRUE
   }
+  if (!is.null(loadings.data) && !is.null(loadings.cutoff)) {
+    loading.length <- sqrt(rowSums(loadings.data[, 1L:2L, drop = FALSE]^2))
+    loadings.data <- loadings.data[
+      loading.length >= loadings.cutoff, , drop = FALSE
+    ]
+    if (nrow(loadings.data) == 0L) {
+      loadings.data <- NULL
+    }
+  }
   if (loadings && !is.null(loadings.data)) {
 
     scaler <- min(max(abs(plot.data[, 1L])) / max(abs(loadings.data[, 1L])),
                   max(abs(plot.data[, 2L])) / max(abs(loadings.data[, 2L])))
 
     loadings.columns <- colnames(loadings.data)
-    loadings.mapping <- ggplot2::aes_string(x = 0, y = 0,
-                                            xend = loadings.columns[1L],
-                                            yend = loadings.columns[2L])
+    loadings.mapping <- ggplot2::aes(x = 0, y = 0,
+                                            xend = .data[[loadings.columns[1L]]],
+                                            yend = .data[[loadings.columns[2L]]])
     loadings.data[, 1L:2L] <- loadings.data[, 1L:2L] * scaler * 0.8
 
     p <- p + geom_segment(data = loadings.data,
@@ -656,11 +675,11 @@ ggbiplot <- function(plot.data, loadings.data = NULL,
           dplyr::group_by(.data[[frame.colour]]) %>%
           dplyr::do(.[grDevices::chull(.[, 1L:2L]), ])
       }
-      mapping <- aes_string(colour = frame.colour, fill = frame.colour)
+      mapping <- if (is.null(frame.colour)) ggplot2::aes() else ggplot2::aes(colour = .data[[frame.colour]], fill = .data[[frame.colour]])
       p <- p + ggplot2::geom_polygon(data = hulls, mapping = mapping,
                                      alpha = frame.alpha)
     } else if (frame.type %in% c('t', 'norm', 'euclid')) {
-      mapping <- aes_string(colour = frame.colour, fill = frame.colour)
+      mapping <- if (is.null(frame.colour)) ggplot2::aes() else ggplot2::aes(colour = .data[[frame.colour]], fill = .data[[frame.colour]])
       p <- p + ggplot2::stat_ellipse(mapping = mapping,
                                      level = frame.level, type = frame.type,
                                      geom = 'polygon', alpha = frame.alpha)

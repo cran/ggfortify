@@ -65,6 +65,7 @@ fortify.survfit <- function(model, data = NULL, surv.connect = FALSE,
 
   # connect to the origin for plotting
   if (surv.connect) {
+    base <- d[d$time == min(d$time), , drop = FALSE]
     if ('strata' %in% colnames(d)) {
       base <- d[d$time == ave(d$time, d$strata, FUN = min), ]
     }
@@ -173,7 +174,7 @@ autoplot.survfit <- function(object, fun = NULL,
   if (is_derived_from(object, 'aareg')) {
     # for autoplot.aareg, object must be a data.frame
     plot.data <- object
-    mapping <- aes_string(x = 'time', y = 'value')
+    mapping <- aes(x = .data[['time']], y = .data[['value']])
     strips_formula <- ~ variable
     if (is.null(surv.colour)) {
       surv.colour <- 'variable'
@@ -184,9 +185,9 @@ autoplot.survfit <- function(object, fun = NULL,
     plot.data <- fortify(object, surv.connect = surv.connect, fun = fun)
 
     if (is_derived_from(object, 'survfitms')) {
-      mapping <- aes_string(x = 'time', y = 'pstate')
+      mapping <- aes(x = .data[['time']], y = .data[['pstate']])
     } else {
-      mapping <- aes_string(x = 'time', y = 'surv')
+      mapping <- aes(x = .data[['time']], y = .data[['surv']])
     }
 
     group <- c()
