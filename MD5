@@ -1,7 +1,7 @@
-bffc87078df9768e83cc58dbf7834b64 *DESCRIPTION
+ae1e0e9c0d2a2a94c57087ef0c084b47 *DESCRIPTION
 e7fe0a693f03b38acf2533199237478b *LICENSE
 0ab2be524a326a5ae476b2817ff5faee *NAMESPACE
-5f6ec12e8c3e39efb8fec33ec4339fb8 *NEWS.md
+5e25bc300e2f922c7aa16fb65a15938c *NEWS.md
 53d83df7018a93eeb1ba4215be0eeaba *R/aaa.R
 b4d6cfab6400e8c4ec8898ff8dd2f34e *R/base_fortify_list.R
 8fb0a06a9cd92ac4eb04ab3f7f24b9e4 *R/base_fortify_ts.R
@@ -17,7 +17,7 @@ fee5d557734f4b9311abfadd7c6e92b7 *R/fortify_maps.R
 a3091ddfd75047e572f5be93f7598249 *R/fortify_raster.R
 121e3d7c686ea449bfe1425a6dcc3635 *R/fortify_spatial.R
 4bc90397a25b49bca217f5c34072ddfd *R/fortify_stats.R
-82edc163831e6f1673bd8e3d77a2c05c *R/fortify_stats_density.R
+b7fa5bdba9604fefde477c50b617859d *R/fortify_stats_density.R
 cdfbfbdbda3e0d8758cf4026e875796e *R/fortify_stats_lm.R
 a353ce8678be5e4b57af9eff5c7e479e *R/fortify_surv.R
 4bc0d020261426c9bbd848b06ef1f4c1 *R/fortify_vars.R
@@ -138,7 +138,7 @@ ac0de1eb9a52b6517061f344ba0dfeb1 *tests/testthat/test-performance.R
 17c42b2ccbd657af37d111cf81b4882f *tests/testthat/test-plotlib.R
 0fcdbd58f752f58065c9f36532e61c9b *tests/testthat/test-raster.R
 4534a53fffca4fe454f416e42fa57200 *tests/testthat/test-spatial.R
-b6674cfdfd67e753254eb04d437e4291 *tests/testthat/test-stats-density.R
+1cf2b0b501f001bb64dbe39b0d1e325c *tests/testthat/test-stats-density.R
 012038d8899607c79634ee673a53f656 *tests/testthat/test-stats-lm.R
 2032a87a400883922fcf7901a3c03645 *tests/testthat/test-stats.R
 042aedd012e4b015e5e46f2f03649124 *tests/testthat/test-surv.R
