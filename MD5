@@ -1,7 +1,7 @@
-ae1e0e9c0d2a2a94c57087ef0c084b47 *DESCRIPTION
+044c9fbbd08e2f1cbdc0d2751770fd94 *DESCRIPTION
 e7fe0a693f03b38acf2533199237478b *LICENSE
 0ab2be524a326a5ae476b2817ff5faee *NAMESPACE
-5e25bc300e2f922c7aa16fb65a15938c *NEWS.md
+951a2656045dd0a8abec0e1e303a80e2 *NEWS.md
 53d83df7018a93eeb1ba4215be0eeaba *R/aaa.R
 b4d6cfab6400e8c4ec8898ff8dd2f34e *R/base_fortify_list.R
 8fb0a06a9cd92ac4eb04ab3f7f24b9e4 *R/base_fortify_ts.R
@@ -18,7 +18,7 @@ a3091ddfd75047e572f5be93f7598249 *R/fortify_raster.R
 121e3d7c686ea449bfe1425a6dcc3635 *R/fortify_spatial.R
 4bc90397a25b49bca217f5c34072ddfd *R/fortify_stats.R
 b7fa5bdba9604fefde477c50b617859d *R/fortify_stats_density.R
-cdfbfbdbda3e0d8758cf4026e875796e *R/fortify_stats_lm.R
+f6377863f52dbca1f94d2c0f5ad3bcd9 *R/fortify_stats_lm.R
 a353ce8678be5e4b57af9eff5c7e479e *R/fortify_surv.R
 4bc0d020261426c9bbd848b06ef1f4c1 *R/fortify_vars.R
 418ff3a9382a841f9401bf42b4d6be2a *R/geom.R
@@ -46,7 +46,7 @@ f27e30d6dead37dc687facf2b5698c71 *man/autoplot.ggplot.Rd
 a4ea5727c8bc18adb1d29a1f1f77a904 *man/autoplot.glmnet.Rd
 d089176be485d8405eb756e665b6c966 *man/autoplot.kmeans.Rd
 86b5ae6b822df1309748c3bd66c055b3 *man/autoplot.list.Rd
-0cab126d1b422676f926042b2d95ae71 *man/autoplot.lm.Rd
+438dbc656a2073d120e0c424992ddecc *man/autoplot.lm.Rd
 61971bc49ff26f8948138509566b2b6a *man/autoplot.map.Rd
 0b43290b6af6dc76b0e51c4565242565 *man/autoplot.matrix.Rd
 b490101dba7cdee84c33380e57b1315d *man/autoplot.pca_common.Rd
@@ -139,7 +139,7 @@ ac0de1eb9a52b6517061f344ba0dfeb1 *tests/testthat/test-performance.R
 0fcdbd58f752f58065c9f36532e61c9b *tests/testthat/test-raster.R
 4534a53fffca4fe454f416e42fa57200 *tests/testthat/test-spatial.R
 1cf2b0b501f001bb64dbe39b0d1e325c *tests/testthat/test-stats-density.R
-012038d8899607c79634ee673a53f656 *tests/testthat/test-stats-lm.R
+d667f8f012e3b5077618cbf59e4fd2da *tests/testthat/test-stats-lm.R
 2032a87a400883922fcf7901a3c03645 *tests/testthat/test-stats.R
 042aedd012e4b015e5e46f2f03649124 *tests/testthat/test-surv.R
 0d7d58a30007a3e4514d22b4cc819437 *tests/testthat/test-ts.R
